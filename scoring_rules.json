@@ -1,0 +1,41 @@
+{
+  "weights": {
+    "EfficiencyScore": 0.40,
+    "VolumeScore":     0.30,
+    "StabilityScore":  0.30
+  },
+  "thresholds": {
+    "EfficiencyScore": [
+      { "condition": "CloseRate >= Benchmark + 15", "range": [90, 100] },
+      { "condition": "CloseRate >= Benchmark + 5",  "range": [75, 89]  },
+      { "condition": "CloseRate == Benchmark",       "range": [60, 74]  },
+      { "condition": "CloseRate < Benchmark - 5",    "range": [40, 59]  },
+      { "condition": "CloseRate < Benchmark - 15",   "range": [0,  39]  }
+    ],
+    "VolumeScore": [
+      { "condition": "LeadCount >= 100", "range": [90, 100] },
+      { "condition": "LeadCount >= 50",  "range": [75, 89]  },
+      { "condition": "LeadCount >= 25",  "range": [55, 74]  },
+      { "condition": "LeadCount >= 10",  "range": [35, 54]  },
+      { "condition": "LeadCount < 10",   "range": [0,  34]  }
+    ],
+    "StabilityScore": [
+      { "condition": "MonthlyRunRate >= 1000000", "range": [90, 100] },
+      { "condition": "MonthlyRunRate >= 500000",  "range": [75, 89]  },
+      { "condition": "MonthlyRunRate >= 250000",  "range": [55, 74]  },
+      { "condition": "MonthlyRunRate >= 100000",  "range": [35, 54]  },
+      { "condition": "MonthlyRunRate < 100000",   "range": [0,  34]  }
+    ]
+  },
+  "readiness_flags": {
+    "high":        { "min": 75,  "label": "Ready for Automation" },
+    "conditional": { "min": 50,  "label": "Conditionally Ready — Address Gaps" },
+    "low":         { "min": 0,   "label": "High Risk / Not Ready for Automation" }
+  },
+  "recommendation_triggers": {
+    "EfficiencyScore_below_60":  "Improve close rate through sales process optimization.",
+    "VolumeScore_below_55":      "Increase lead generation volume before scaling automation.",
+    "StabilityScore_below_55":   "Stabilize monthly revenue before investing in growth tools.",
+    "OverallScore_above_75":     "Business is cleared for full automation pipeline deployment."
+  }
+}

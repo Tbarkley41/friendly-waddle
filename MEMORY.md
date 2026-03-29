@@ -14,9 +14,9 @@ Deploy 10 specialized agents using Inter-Agent Collaboration (IAC) to automate g
 
 | # | Agent | Function |
 |---|-------|----------|
-| 1 | Info Extractor | Structures lead/customer data from intake forms |
-| 2 | Metrics Calc | Revenue, lead volume, and close rate calculations |
-| 3 | Readiness Scorer | Business health benchmarking |
+| 1 | Info Extractor | Structures lead/customer data from intake forms | ✅ |
+| 2 | Metrics Calc | Revenue, lead volume, and close rate calculations | ✅ |
+| 3 | Readiness Scorer | Business health benchmarking | ✅ |
 | 4 | Bottleneck ID | Growth inhibitor analysis |
 | 5 | Automation (Zapier) | Top 3 workflow triggers + KPI impact |
 | 6 | SEO Recs | Daily visibility tasks tailored to goals |
