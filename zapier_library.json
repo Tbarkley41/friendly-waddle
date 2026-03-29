@@ -1,0 +1,145 @@
+{
+  "zapier_library": {
+    "conversion": [
+      {
+        "id": "conv_001",
+        "WorkflowName": "Lead Nurture Sequence",
+        "Tag": "conversion",
+        "ZapierApps": ["HubSpot", "Gmail", "Calendly"],
+        "Description": "When a new lead is added to HubSpot, trigger a 3-email nurture sequence and auto-schedule a discovery call via Calendly.",
+        "KPITarget": "CloseRate",
+        "EstimatedImpact_BySeverity": {
+          "High":   "+8% CloseRate in 30 days",
+          "Medium": "+15% CloseRate in 30 days",
+          "Low":    "+25% CloseRate in 30 days"
+        },
+        "SetupComplexity": "Medium",
+        "ZapTemplate": "HubSpot New Contact → Gmail Send Email → Calendly Create Invite"
+      },
+      {
+        "id": "conv_002",
+        "WorkflowName": "Auto-SMS Follow-Up",
+        "Tag": "conversion",
+        "ZapierApps": ["Twilio", "HubSpot", "Google Sheets"],
+        "Description": "When a proposal is sent (HubSpot deal stage update), auto-trigger an SMS follow-up via Twilio within 2 hours and log response status to Google Sheets.",
+        "KPITarget": "CloseRate",
+        "EstimatedImpact_BySeverity": {
+          "High":   "+6% CloseRate in 30 days",
+          "Medium": "+12% CloseRate in 30 days",
+          "Low":    "+20% CloseRate in 30 days"
+        },
+        "SetupComplexity": "Medium",
+        "ZapTemplate": "HubSpot Deal Stage Change → Twilio Send SMS → Google Sheets Log Row"
+      },
+      {
+        "id": "conv_003",
+        "WorkflowName": "CRM Follow-Up Cadence",
+        "Tag": "conversion",
+        "ZapierApps": ["HubSpot", "Slack", "Google Calendar"],
+        "Description": "When a lead goes cold (no activity for 5 days), create a Slack reminder for the owner and add a follow-up task to Google Calendar.",
+        "KPITarget": "CloseRate",
+        "EstimatedImpact_BySeverity": {
+          "High":   "+5% CloseRate in 30 days",
+          "Medium": "+10% CloseRate in 30 days",
+          "Low":    "+18% CloseRate in 30 days"
+        },
+        "SetupComplexity": "Low",
+        "ZapTemplate": "HubSpot Inactive Contact → Slack Send Message → Google Calendar Create Event"
+      }
+    ],
+    "lead_gen": [
+      {
+        "id": "lead_001",
+        "WorkflowName": "Ad-to-Sheet Lead Capture",
+        "Tag": "lead_gen",
+        "ZapierApps": ["Facebook Lead Ads", "Google Sheets", "HubSpot"],
+        "Description": "When a Facebook/Instagram Lead Ad form is submitted, append lead data to Google Sheets and create a new HubSpot contact instantly.",
+        "KPITarget": "LeadCount",
+        "EstimatedImpact_BySeverity": {
+          "High":   "+10% LeadCount in 30 days",
+          "Medium": "+20% LeadCount in 30 days",
+          "Low":    "+30% LeadCount in 30 days"
+        },
+        "SetupComplexity": "Low",
+        "ZapTemplate": "Facebook Lead Ads New Lead → Google Sheets Append Row → HubSpot Create Contact"
+      },
+      {
+        "id": "lead_002",
+        "WorkflowName": "Form-to-CRM Intake Automation",
+        "Tag": "lead_gen",
+        "ZapierApps": ["Typeform", "HubSpot", "Gmail"],
+        "Description": "When a Typeform intake form is submitted, create a HubSpot deal, assign to owner, and send a personalized confirmation email via Gmail.",
+        "KPITarget": "LeadCount",
+        "EstimatedImpact_BySeverity": {
+          "High":   "+8% LeadCount in 30 days",
+          "Medium": "+18% LeadCount in 30 days",
+          "Low":    "+28% LeadCount in 30 days"
+        },
+        "SetupComplexity": "Low",
+        "ZapTemplate": "Typeform New Entry → HubSpot Create Deal → Gmail Send Email"
+      },
+      {
+        "id": "lead_003",
+        "WorkflowName": "Social-to-Email List Builder",
+        "Tag": "lead_gen",
+        "ZapierApps": ["LinkedIn Lead Gen Forms", "Mailchimp", "HubSpot"],
+        "Description": "When a LinkedIn Lead Gen form is submitted, add the contact to a Mailchimp audience segment and create a HubSpot contact for CRM tracking.",
+        "KPITarget": "LeadCount",
+        "EstimatedImpact_BySeverity": {
+          "High":   "+7% LeadCount in 30 days",
+          "Medium": "+15% LeadCount in 30 days",
+          "Low":    "+25% LeadCount in 30 days"
+        },
+        "SetupComplexity": "Low",
+        "ZapTemplate": "LinkedIn Lead Gen Forms New Lead → Mailchimp Add Subscriber → HubSpot Create Contact"
+      }
+    ],
+    "retention": [
+      {
+        "id": "ret_001",
+        "WorkflowName": "Billing Automation",
+        "Tag": "retention",
+        "ZapierApps": ["Stripe", "QuickBooks", "Gmail"],
+        "Description": "When a Stripe invoice is created, auto-sync to QuickBooks and send a branded payment reminder email via Gmail 3 days before due date.",
+        "KPITarget": "ChurnRate",
+        "EstimatedImpact_BySeverity": {
+          "High":   "-8% Churn in 30 days",
+          "Medium": "-15% Churn in 30 days",
+          "Low":    "-22% Churn in 30 days"
+        },
+        "SetupComplexity": "Medium",
+        "ZapTemplate": "Stripe New Invoice → QuickBooks Create Invoice → Gmail Send Email"
+      },
+      {
+        "id": "ret_002",
+        "WorkflowName": "Retention Alert System",
+        "Tag": "retention",
+        "ZapierApps": ["HubSpot", "Slack", "Google Sheets"],
+        "Description": "When a client contract renewal is within 30 days (HubSpot deal close date), trigger a Slack alert to owner and log to a Renewal Tracker sheet.",
+        "KPITarget": "RetentionRate",
+        "EstimatedImpact_BySeverity": {
+          "High":   "+10% RetentionRate in 30 days",
+          "Medium": "+18% RetentionRate in 30 days",
+          "Low":    "+28% RetentionRate in 30 days"
+        },
+        "SetupComplexity": "Low",
+        "ZapTemplate": "HubSpot Deal Upcoming Close Date → Slack Send Message → Google Sheets Append Row"
+      },
+      {
+        "id": "ret_003",
+        "WorkflowName": "Churn Early-Warning Trigger",
+        "Tag": "retention",
+        "ZapierApps": ["Stripe", "HubSpot", "Gmail"],
+        "Description": "When a Stripe subscription is cancelled or payment fails, flag the HubSpot contact as 'At-Risk' and auto-send a win-back email within 1 hour.",
+        "KPITarget": "ChurnRate",
+        "EstimatedImpact_BySeverity": {
+          "High":   "-6% Churn in 30 days",
+          "Medium": "-12% Churn in 30 days",
+          "Low":    "-20% Churn in 30 days"
+        },
+        "SetupComplexity": "Medium",
+        "ZapTemplate": "Stripe Cancelled Subscription → HubSpot Update Contact → Gmail Send Email"
+      }
+    ]
+  }
+}
