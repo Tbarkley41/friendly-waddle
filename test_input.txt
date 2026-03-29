@@ -1,0 +1,16 @@
+--- TEST INPUT: Agent #1 Business Info Extractor ---
+
+Hi team, just wrapping up notes from the client intake call with Pinnacle Growth Partners.
+
+They're a management consulting firm based out of Atlanta, GA. Their main offerings right
+now are executive coaching, operational efficiency audits, and strategic planning workshops.
+They also do some light fractional CFO work but it's not a core service yet.
+
+Revenue-wise, they're pulling in about $42,000 a month right now, mostly from retainer clients.
+They generate somewhere around 30 to 35 leads per month through referrals and LinkedIn outreach.
+Their close rate has been sitting around 40% for the last two quarters, which they're pretty
+happy with but want to push toward 55%.
+
+Let me know if you need anything else before we move to the analysis phase.
+
+— Jordan
