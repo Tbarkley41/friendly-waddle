@@ -1,0 +1,207 @@
+{
+  "meta": {
+    "version":    "1.0",
+    "OwnerAgent": "Agent #10 — Website Builder",
+    "LastUpdated": "2026-03-29"
+  },
+  "templates": {
+    "Consulting": {
+      "TemplateID":    "TPL-CONSULTING-01",
+      "Description":  "High-trust, authority-first layout for B2B consulting firms.",
+      "ConversionGoal": "Discovery call booking / lead form submission",
+      "PageArchitecture": [
+        {
+          "PageType":    "Home",
+          "Slug":        "/",
+          "Sections":    ["Hero", "ValueProp", "Services", "SocialProof", "CTA", "Footer"],
+          "Hero": {
+            "HeadlineFormula": "[Outcome] for [ICP] in [Location]",
+            "HeadlineExample": "Operational Clarity for Orlando SMBs",
+            "SubCopy":         "We diagnose the bottlenecks holding your business back — and build the systems to eliminate them.",
+            "CTAPrimary":      "Book a Free Strategy Call",
+            "CTASecondary":    "See How It Works"
+          },
+          "SocialProof": ["Client logo strip", "2–3 short testimonials", "Result stat callouts"],
+          "SEOPriority": "High"
+        },
+        {
+          "PageType": "Service",
+          "Slug":     "/services/[service-slug]",
+          "Sections": ["ServiceHero", "ProblemStatement", "Solution", "Process", "Results", "CTA"],
+          "SEOPriority": "High",
+          "SchemaType":  "Service"
+        },
+        {
+          "PageType": "Landing",
+          "Slug":     "/[campaign-slug]",
+          "Sections": ["Hero", "BenefitsList", "LeadForm", "TrustSignals"],
+          "Notes":    "No navigation — conversion-only page. Agent #1 form required.",
+          "SEOPriority": "Medium"
+        },
+        {
+          "PageType": "CaseStudy",
+          "Slug":     "/case-studies/[client-slug]",
+          "Sections": ["Challenge", "Approach", "Outcome", "Metrics", "TestimonialQuote", "CTA"],
+          "SEOPriority": "Medium",
+          "SchemaType":  "Article"
+        },
+        {
+          "PageType": "Contact",
+          "Slug":     "/contact",
+          "Sections": ["LeadForm", "ContactInfo", "Map"],
+          "Notes":    "Primary Agent #1 intake form lives here.",
+          "SEOPriority": "Low"
+        }
+      ],
+      "CTAStructure": {
+        "Primary":   { "Text": "Book a Free Strategy Call", "Action": "Calendly link or form scroll" },
+        "Secondary": { "Text": "Download Our Free Audit",   "Action": "Lead magnet gated form" },
+        "Tertiary":  { "Text": "See Our Results",           "Action": "Case study anchor link" }
+      },
+      "FormSchema": {
+        "FormID":   "consulting-intake-v1",
+        "Fields":   ["BusinessName", "Industry", "CoreServices", "MonthlyRevenue", "LeadCount", "CloseRate"],
+        "SubmitCTA": "Get My Free Growth Analysis",
+        "PostSubmit": "Thank you — we'll send your analysis within 24 hours."
+      },
+      "TrustElements": ["ClientLogos", "Testimonials", "CaseStudyLinks", "MediaMentions", "Certifications"],
+      "TypicalPageCount": 8,
+      "RecommendedColors": { "Primary": "#1A2E4A", "Accent": "#F4A623", "Background": "#F9F9F9" },
+      "RecommendedFonts":  { "Heading": "Playfair Display", "Body": "Inter" }
+    },
+    "SaaS": {
+      "TemplateID":    "TPL-SAAS-01",
+      "Description":  "Product-led growth layout optimized for trial/demo signups.",
+      "ConversionGoal": "Free trial signup / demo request",
+      "PageArchitecture": [
+        {
+          "PageType": "Home",
+          "Slug":     "/",
+          "Sections": ["Hero", "ProductDemo", "Features", "Pricing", "Testimonials", "FAQ", "CTA", "Footer"],
+          "Hero": {
+            "HeadlineFormula": "[Primary Benefit] — [Product Name]",
+            "HeadlineExample": "Automate Your Growth Stack — Powered by AI",
+            "CTAPrimary":      "Start Free Trial",
+            "CTASecondary":    "Watch Demo"
+          },
+          "SEOPriority": "High"
+        },
+        {
+          "PageType": "Pricing",
+          "Slug":     "/pricing",
+          "Sections": ["PricingTiers", "FeatureComparisonTable", "FAQ", "CTA"],
+          "SEOPriority": "High"
+        },
+        {
+          "PageType": "Landing",
+          "Slug":     "/[use-case-slug]",
+          "Sections": ["Hero", "FeatureHighlight", "SocialProof", "TrialForm"],
+          "Notes":    "One lander per ICP segment or use case.",
+          "SEOPriority": "High"
+        },
+        {
+          "PageType": "Service",
+          "Slug":     "/features/[feature-slug]",
+          "Sections": ["FeatureHero", "HowItWorks", "Screenshots", "UseCases", "CTA"],
+          "SEOPriority": "Medium"
+        },
+        {
+          "PageType": "Contact",
+          "Slug":     "/contact",
+          "Sections": ["SupportOptions", "DemoRequestForm"],
+          "SEOPriority": "Low"
+        }
+      ],
+      "CTAStructure": {
+        "Primary":   { "Text": "Start Free Trial",  "Action": "Signup flow" },
+        "Secondary": { "Text": "Request a Demo",    "Action": "Calendly or demo form" },
+        "Tertiary":  { "Text": "See Pricing",        "Action": "Anchor to /pricing" }
+      },
+      "FormSchema": {
+        "FormID":    "saas-trial-v1",
+        "Fields":    ["BusinessName", "Industry", "CoreServices", "MonthlyRevenue"],
+        "SubmitCTA": "Start My Free Trial",
+        "PostSubmit": "Account created — check your email to activate."
+      },
+      "TrustElements": ["G2Badge", "CapterraRating", "ProductHuntBadge", "CustomerCount", "Integrations"],
+      "TypicalPageCount": 12,
+      "RecommendedColors": { "Primary": "#5B21B6", "Accent": "#10B981", "Background": "#FFFFFF" },
+      "RecommendedFonts":  { "Heading": "Space Grotesk", "Body": "DM Sans" }
+    },
+    "Service": {
+      "TemplateID":    "TPL-SERVICE-01",
+      "Description":  "Local service business layout optimized for calls, bookings, and local SEO.",
+      "ConversionGoal": "Phone call / booking form / quote request",
+      "PageArchitecture": [
+        {
+          "PageType": "Home",
+          "Slug":     "/",
+          "Sections": ["Hero", "ServicesGrid", "WhyChooseUs", "ReviewsCarousel", "ServiceArea", "CTA", "Footer"],
+          "Hero": {
+            "HeadlineFormula": "[Service] in [City] — [Trust Signal]",
+            "HeadlineExample": "Trusted Business Consulting in Orlando, FL",
+            "CTAPrimary":      "Get a Free Quote",
+            "CTASecondary":    "Call Now"
+          },
+          "SEOPriority": "High"
+        },
+        {
+          "PageType": "Service",
+          "Slug":     "/services/[service-slug]",
+          "Sections": ["ServiceHero", "WhatWeOffer", "HowItWorks", "Pricing", "Reviews", "CTA"],
+          "SEOPriority": "High",
+          "SchemaType":  "Service"
+        },
+        {
+          "PageType": "Landing",
+          "Slug":     "/[city]-[service-slug]",
+          "Sections": ["LocalHero", "ServiceDetails", "LocalReviews", "QuoteForm"],
+          "Notes":    "One page per service+city combo for local SEO domination.",
+          "SEOPriority": "High"
+        },
+        {
+          "PageType": "Contact",
+          "Slug":     "/contact",
+          "Sections": ["QuoteForm", "PhoneNumber", "BusinessHours", "Map"],
+          "Notes":    "Agent #1 intake form lives here.",
+          "SEOPriority": "Medium"
+        }
+      ],
+      "CTAStructure": {
+        "Primary":   { "Text": "Get a Free Quote",      "Action": "Form scroll or click-to-call" },
+        "Secondary": { "Text": "Call (407) XXX-XXXX",   "Action": "tel: link" },
+        "Tertiary":  { "Text": "See Our Work",           "Action": "Gallery or case study page" }
+      },
+      "FormSchema": {
+        "FormID":    "service-quote-v1",
+        "Fields":    ["BusinessName", "Industry", "CoreServices", "MonthlyRevenue", "LeadCount"],
+        "SubmitCTA": "Send My Quote Request",
+        "PostSubmit": "Thanks — we'll get back to you within 2 business hours."
+      },
+      "TrustElements": ["GoogleReviews", "BBBBadge", "YearsInBusiness", "ServiceAreaMap", "BeforeAfterGallery"],
+      "TypicalPageCount": 6,
+      "RecommendedColors": { "Primary": "#0F4C81", "Accent": "#FF6B35", "Background": "#F8F8F8" },
+      "RecommendedFonts":  { "Heading": "Montserrat", "Body": "Open Sans" }
+    },
+    "Default": {
+      "TemplateID":   "TPL-DEFAULT-01",
+      "Description":  "Generic high-conversion fallback for unmatched industries.",
+      "Notes":        "Used when Industry from agent_1_output.json has no exact match.",
+      "PageArchitecture": [
+        { "PageType": "Home",    "Slug": "/",         "Sections": ["Hero", "Services", "CTA", "Footer"] },
+        { "PageType": "Service", "Slug": "/services", "Sections": ["ServiceList", "CTA"] },
+        { "PageType": "Contact", "Slug": "/contact",  "Sections": ["LeadForm", "ContactInfo"] }
+      ],
+      "CTAStructure": {
+        "Primary": { "Text": "Get Started", "Action": "Contact form scroll" }
+      },
+      "FormSchema": {
+        "FormID":    "default-intake-v1",
+        "Fields":    ["BusinessName", "Industry", "CoreServices", "MonthlyRevenue"],
+        "SubmitCTA": "Submit",
+        "PostSubmit": "Thank you — we'll be in touch shortly."
+      },
+      "TypicalPageCount": 4
+    }
+  }
+}
