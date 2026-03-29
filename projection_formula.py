@@ -114,7 +114,7 @@ def aggregate_drivers(automation: dict, seo: dict) -> dict:
 # ── Core Projection Engine ────────────────────────────────────────────────────
 
 def build_projections(baseline_rev: float, baseline_leads: float,
-                      baseline_close: float, drivers: dict) -> dict:
+                      baseline_close: float, drivers: dict) -> tuple[dict, float]:
 
     revenue_cmgr = cmgr(drivers["TotalLeadLift"] + drivers["TotalCloseRateLift"])
     lead_cmgr    = cmgr(drivers["TotalLeadLift"])

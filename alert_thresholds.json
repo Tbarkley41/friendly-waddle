@@ -1,0 +1,157 @@
+{
+  "alert_thresholds": {
+    "status_logic": {
+      "GREEN":  "actual >= target",
+      "YELLOW": "actual >= target * 0.80 AND actual < target",
+      "RED":    "actual < target * 0.80"
+    },
+    "daily": {
+      "NewLeadsToday": {
+        "description": "New CRM leads added today",
+        "target_formula": "Day30.Base.Leads / 22",
+        "target_example": 1.6,
+        "thresholds": {
+          "GREEN":  ">= 1.6 leads/day",
+          "YELLOW": "1.0 – 1.5 leads/day (10–35% below target)",
+          "RED":    "< 1.0 leads/day (>35% below target)"
+        },
+        "action_on_red": "Review top-of-funnel; re-run Agent #6 SEO tasks immediately."
+      },
+      "SEOTasksCompleted": {
+        "description": "Daily SEO tasks completed (from Agent #6 list)",
+        "target": 3,
+        "thresholds": {
+          "GREEN":  "3 of 3 completed",
+          "YELLOW": "2 of 3 completed",
+          "RED":    "0–1 of 3 completed"
+        },
+        "action_on_red": "Block 45 min tomorrow AM for SEO execution before other tasks."
+      },
+      "ZapierTriggersRun": {
+        "description": "Zapier workflow executions today",
+        "target": 5,
+        "thresholds": {
+          "GREEN":  ">= 5 triggers",
+          "YELLOW": "3–4 triggers",
+          "RED":    "< 3 triggers or 0 (workflow may be broken)"
+        },
+        "action_on_red": "Check Zapier task history for errors; re-activate broken zaps."
+      },
+      "OutboundTouchCount": {
+        "description": "Emails/calls/DMs sent to prospects",
+        "target": 5,
+        "thresholds": {
+          "GREEN":  ">= 5 touches/day",
+          "YELLOW": "3–4 touches/day",
+          "RED":    "< 3 touches/day"
+        },
+        "action_on_red": "Schedule a 30-min outreach block; use CRM task queue."
+      }
+    },
+    "weekly": {
+      "WeeklyLeadCount": {
+        "description": "Total new CRM leads for the week",
+        "target_formula": "Day30.Base.Leads / 4",
+        "target_example": 8.75,
+        "thresholds": {
+          "GREEN":  ">= 9 leads/week",
+          "YELLOW": "7–8 leads/week (drop of 10–20% vs. target)",
+          "RED":    "< 7 leads/week (drop > 20% vs. target)"
+        },
+        "action_on_red": "Trigger Agent #4 (Bottleneck ID) re-run; escalate lead gen tactics."
+      },
+      "WeeklyCloseRate": {
+        "description": "(Deals closed / Proposals sent) * 100",
+        "target_formula": "Day30.Base.CloseRate",
+        "target_example": 44.17,
+        "thresholds": {
+          "GREEN":  ">= 44%",
+          "YELLOW": "38–43% (approaching baseline regression)",
+          "RED":    "< 38% (below pre-intervention baseline)"
+        },
+        "action_on_red": "Review proposal quality; re-run Agent #5 conversion workflow recs."
+      },
+      "AverageDealSize": {
+        "description": "Total revenue / closed deals this week",
+        "target_formula": "MonthlyRevenue / (LeadCount * CloseRate/100)",
+        "target_example": 3181.82,
+        "thresholds": {
+          "GREEN":  ">= $3,181",
+          "YELLOW": "$2,700 – $3,180",
+          "RED":    "< $2,700"
+        },
+        "action_on_red": "Review pricing strategy; consider upsell/bundle offer restructure."
+      },
+      "FollowUpCompletionRate": {
+        "description": "(Follow-ups completed / follow-ups due) * 100",
+        "target": 90,
+        "thresholds": {
+          "GREEN":  ">= 90%",
+          "YELLOW": "75–89%",
+          "RED":    "< 75%"
+        },
+        "action_on_red": "Enable CRM auto-reminder zap (Agent #5 conv_003); review workload."
+      }
+    },
+    "monthly": {
+      "ActualMonthlyRevenue": {
+        "description": "Actual invoiced/collected revenue for the month",
+        "target_sources": {
+          "Month1":  "Day30.Base.Revenue",
+          "Month3":  "Day90.Base.Revenue",
+          "Month6":  "Day180.Base.Revenue"
+        },
+        "target_examples": {
+          "Month1": 45770,
+          "Month3": 54357,
+          "Month6": 70350
+        },
+        "thresholds": {
+          "GREEN":  "Variance >= 0% (at or above projection)",
+          "YELLOW": "Variance -1% to -15%",
+          "RED":    "Variance < -15%"
+        },
+        "action_on_red": "Full pipeline audit; re-run Agents #3–#7 with updated actuals."
+      },
+      "ActualLeadCount": {
+        "description": "Total CRM leads added in the month",
+        "target_sources": {
+          "Month1": "Day30.Base.Leads",
+          "Month3": "Day90.Base.Leads",
+          "Month6": "Day180.Base.Leads"
+        },
+        "target_examples": {
+          "Month1": 35,
+          "Month3": 39,
+          "Month6": 47
+        },
+        "thresholds": {
+          "GREEN":  ">= projected lead count",
+          "YELLOW": "80–99% of projected",
+          "RED":    "< 80% of projected"
+        },
+        "action_on_red": "Re-activate lead gen zaps; increase SEO task frequency to 2x/day."
+      },
+      "ForecastAccuracyScore": {
+        "description": "100 - abs(RevenueVariance%) — measures forecast reliability",
+        "target": 85,
+        "thresholds": {
+          "GREEN":  ">= 85 (forecast within 15%)",
+          "YELLOW": "70–84 (forecast within 16–30%)",
+          "RED":    "< 70 (forecast off by > 30% — recalibrate CMGR inputs)"
+        },
+        "action_on_red": "Update projection_formula.py growth driver inputs with actual KPI lifts."
+      },
+      "RevenueVariance": {
+        "description": "((ActualRevenue - ProjectedRevenue) / ProjectedRevenue) * 100",
+        "target": 0,
+        "thresholds": {
+          "GREEN":  ">= 0% (beating or meeting forecast)",
+          "YELLOW": "-1% to -15%",
+          "RED":    "< -15%"
+        },
+        "action_on_red": "Diagnose which growth driver underperformed; update assumptions."
+      }
+    }
+  }
+}
