@@ -88,3 +88,19 @@ Agent #10 → site_deployment_manifest.json
 - Connect IAC JSON files to a shared cloud store (S3 / Supabase)
 - Build a dashboard UI to surface `kpi_dashboard_spec.json` in real time
 - Onboard first BKT Consulting client through Agent #1 intake pipeline
+
+---
+
+## EXTENDED REGISTRY
+
+| # | Module | Function | Status |
+|---|--------|----------|--------|
+| 11 | Drainage Solutions Growth Sprint | 30/60/90-day SEO + Zapier + projections for drainagesolutionsfl.com | ✅ |
+| 12 | Brand Migration | BRAND_IDENTITY.json + WP API + SEO disambiguation for bkt-agency.com | ✅ |
+
+### Module 12 — Brand Migration Assets
+| File | Purpose |
+|------|---------|
+| `BRAND_IDENTITY.json` | Brand manifest — DBA, URL, socials, style guide, Schema.org entity |
+| `AGENT_WP_API.md` | WordPress REST API integration — posts, pages, media, auth |
+| `SEO_CLEANUP.md` | Orlando local SEO disambiguation from Mexico-based entity |
