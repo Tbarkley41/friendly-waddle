@@ -97,6 +97,7 @@ Agent #10 → site_deployment_manifest.json
 |---|--------|----------|--------|
 | 11 | Drainage Solutions Growth Sprint | 30/60/90-day SEO + Zapier + projections for drainagesolutionsfl.com | ✅ |
 | 12 | Brand Migration | BRAND_IDENTITY.json + WP API + SEO disambiguation for bkt-agency.com | ✅ |
+| 21 | Agency HQ Architecture | WP live deployment — HOLD pending secure credential rotation | ⛔ BLOCKED |
 
 ### Module 12 — Brand Migration Assets
 | File | Purpose |
