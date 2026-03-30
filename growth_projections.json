@@ -1,70 +1,43 @@
 {
-  "BusinessName": "Pinnacle Growth Partners",
+  "BusinessName": "Drainage Solutions, Inc.",
+  "URL": "https://drainagesolutionsfl.com/",
+  "GeneratedDate": "2026-03-29",
   "BaselineSnapshot": {
-    "Revenue": 42000,
-    "Leads": 33,
-    "CloseRate": 40
+    "MonthlyRevenue": 85000,
+    "LeadCount": 60,
+    "CloseRate": 25,
+    "AvgDealSize": 5666.67
   },
   "GrowthDrivers": {
-    "TotalLeadLift": 42.5,
-    "TotalCloseRateLift": 25,
-    "TotalTrafficLift": 25,
-    "CMGR": 0.089772
+    "TotalLeadLift": 35,
+    "TotalCloseRateLift": 20,
+    "TotalTrafficLift": 30,
+    "CMGR": 0.157295,
+    "LeadCMGR": 0.105209,
+    "Sources": {
+      "SEO_Sprint_LeadLift":       "Emergency landing page + stormwater pillar + city pages → +35% leads by Day90",
+      "Zapier_CloseRateLift":      "<5-min lead response automation → +20% close rate improvement (25%→30%)",
+      "SEO_TrafficLift":           "Technical fixes + new pages + backlinks → +30% organic traffic"
+    }
   },
   "Projections": {
     "Day30": {
       "Confidence": "High Confidence",
-      "Conservative": {
-        "Revenue": 44262.26,
-        "Leads": 34.2,
-        "CloseRate": 42.5
-      },
-      "Base": {
-        "Revenue": 45770.44,
-        "Leads": 35.01,
-        "CloseRate": 44.17
-      },
-      "Optimistic": {
-        "Revenue": 47278.62,
-        "Leads": 35.81,
-        "CloseRate": 45.83
-      }
+      "Conservative": { "Revenue": 93022,  "Leads": 63.8, "CloseRate": 26.0  },
+      "Base":         { "Revenue": 98370,  "Leads": 66.3, "CloseRate": 26.67 },
+      "Optimistic":   { "Revenue": 103718, "Leads": 68.8, "CloseRate": 27.33 }
+    },
+    "Day60": {
+      "Confidence": "High Confidence",
+      "Conservative": { "Revenue": 101801, "Leads": 67.8, "CloseRate": 27.0  },
+      "Base":         { "Revenue": 113843, "Leads": 73.3, "CloseRate": 28.33 },
+      "Optimistic":   { "Revenue": 126558, "Leads": 79.0, "CloseRate": 29.67 }
     },
     "Day90": {
       "Confidence": "Medium Confidence",
-      "Conservative": {
-        "Revenue": 49158.92,
-        "Leads": 36.75,
-        "CloseRate": 47.5
-      },
-      "Base": {
-        "Revenue": 54357.15,
-        "Leads": 39.39,
-        "CloseRate": 52.5
-      },
-      "Optimistic": {
-        "Revenue": 59909.5,
-        "Leads": 42.17,
-        "CloseRate": 57.5
-      }
-    },
-    "Day180": {
-      "Confidence": "Low Confidence",
-      "Conservative": {
-        "Revenue": 57538.07,
-        "Leads": 40.92,
-        "CloseRate": 55
-      },
-      "Base": {
-        "Revenue": 70350,
-        "Leads": 47.02,
-        "CloseRate": 65
-      },
-      "Optimistic": {
-        "Revenue": 85455.91,
-        "Leads": 53.88,
-        "CloseRate": 75
-      }
+      "Conservative": { "Revenue": 111409, "Leads": 72.1, "CloseRate": 28.0  },
+      "Base":         { "Revenue": 131750, "Leads": 81.0, "CloseRate": 30.0  },
+      "Optimistic":   { "Revenue": 154428, "Leads": 90.6, "CloseRate": 32.0  }
     }
   },
   "ProjectionDisclaimer": "Forecasts are model-based estimates. Validate against actuals at each horizon."

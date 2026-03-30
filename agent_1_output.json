@@ -7,10 +7,6 @@
     "Strategic Planning Workshops"
   ],
   "MonthlyRevenue": 42000,
-  "MonthlyRunRate": 504000,
   "LeadCount": 33,
-  "LeadValue": 1272.73,
-  "CloseRate": 40,
-  "IndustryBenchmark": 40,
-  "ConversionEfficiency": "At Benchmark"
+  "CloseRate": 40
 }
