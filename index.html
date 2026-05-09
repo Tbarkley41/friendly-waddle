@@ -1,0 +1,1858 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>[TBD] School Predictability Scorer</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;900&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+
+  <!-- EmailJS SDK -->
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+
+  <style>
+    /* ─── CSS Variables ─────────────────────────────────────────── */
+    :root {
+      --bg-primary:        #0D1117;
+      --bg-secondary:      #161B22;
+      --bg-tertiary:       #21262D;
+      --accent-gold:       #C9A84C;
+      --accent-gold-muted: #9A7A32;
+      --text-primary:      #E6EDF3;
+      --text-secondary:    #8B949E;
+      --text-muted:        #484F58;
+      --success:           #3FB950;
+      --warning:           #D29922;
+      --danger:            #F85149;
+      --border:            #30363D;
+    }
+
+    /* ─── Reset ─────────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      font-family: 'DM Mono', monospace;
+      font-size: 14px;
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+    ::-webkit-scrollbar { width: 5px; }
+    ::-webkit-scrollbar-track { background: var(--bg-primary); }
+    ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+    /* ─── Progress Bar ──────────────────────────────────────────── */
+    .progress-bar-container {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--bg-secondary);
+      border-bottom: 1px solid var(--border);
+      padding: 10px 24px;
+    }
+    .progress-label {
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--text-secondary);
+      margin-bottom: 7px;
+    }
+    .progress-track {
+      height: 2px;
+      background: var(--bg-tertiary);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%;
+      background: var(--accent-gold);
+      width: 0%;
+      transition: width 0.5s ease;
+    }
+
+    /* ─── Container ─────────────────────────────────────────────── */
+    .container {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 48px 20px 100px;
+    }
+
+    /* ─── Header ────────────────────────────────────────────────── */
+    .site-header {
+      text-align: center;
+      padding: 52px 0 44px;
+      border-bottom: 1px solid var(--accent-gold-muted);
+      margin-bottom: 48px;
+    }
+    .header-eyebrow {
+      font-size: 10px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--accent-gold);
+      margin-bottom: 14px;
+    }
+    .header-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(30px, 5vw, 52px);
+      font-weight: 700;
+      letter-spacing: -1px;
+      line-height: 1.1;
+      margin-bottom: 10px;
+    }
+    .header-title span { color: var(--accent-gold); }
+    .header-subtitle {
+      font-size: 10px;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      color: var(--text-secondary);
+      margin-bottom: 16px;
+    }
+    .header-description {
+      font-size: 13px;
+      color: var(--text-secondary);
+      font-style: italic;
+      max-width: 480px;
+      margin: 0 auto;
+    }
+
+    /* ─── Gold Divider ──────────────────────────────────────────── */
+    .gold-divider {
+      height: 1px;
+      background: linear-gradient(to right, transparent, var(--accent-gold-muted), transparent);
+      margin: 28px 0;
+    }
+
+    /* ─── Section Cards ─────────────────────────────────────────── */
+    .section-card {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      margin-bottom: 20px;
+      overflow: hidden;
+    }
+    .section-header {
+      padding: 18px 24px;
+      border-bottom: 1px solid var(--border);
+      cursor: pointer;
+      user-select: none;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: background 0.15s;
+    }
+    .section-header:hover { background: var(--bg-tertiary); }
+    .section-header-left { flex: 1; }
+    .section-eyebrow {
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--accent-gold);
+      margin-bottom: 3px;
+    }
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 19px;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+    .section-weight {
+      font-size: 11px;
+      color: var(--text-secondary);
+      margin-top: 3px;
+    }
+    .section-header-right {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-shrink: 0;
+      margin-left: 16px;
+    }
+    .section-complete-badge {
+      font-size: 10px;
+      letter-spacing: 1px;
+      color: var(--success);
+      text-transform: uppercase;
+      opacity: 0;
+      transition: opacity 0.3s;
+      white-space: nowrap;
+    }
+    .section-complete-badge.visible { opacity: 1; }
+    .section-toggle {
+      width: 18px;
+      height: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-secondary);
+      font-size: 11px;
+      transition: transform 0.25s ease;
+    }
+    .section-toggle.collapsed { transform: rotate(-90deg); }
+    .section-body { padding: 24px; }
+    .section-body.collapsed { display: none; }
+    .section-description {
+      font-size: 12px;
+      color: var(--text-secondary);
+      margin-bottom: 22px;
+      line-height: 1.75;
+      font-style: italic;
+      padding: 12px 14px;
+      border-left: 2px solid var(--accent-gold-muted);
+      background: rgba(201, 168, 76, 0.04);
+    }
+
+    /* ─── Form Fields ───────────────────────────────────────────── */
+    .field-group { margin-bottom: 18px; }
+    .field-label {
+      font-size: 10px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--text-secondary);
+      display: block;
+      margin-bottom: 7px;
+    }
+    .field-question {
+      font-size: 12px;
+      color: var(--text-primary);
+      margin-bottom: 8px;
+      font-style: italic;
+    }
+    .text-input,
+    .number-input,
+    .url-input {
+      width: 100%;
+      background: var(--bg-tertiary);
+      border: 1px solid var(--border);
+      border-bottom: 2px solid var(--border);
+      color: var(--text-primary);
+      font-family: 'DM Mono', monospace;
+      font-size: 13px;
+      padding: 11px 13px;
+      border-radius: 3px;
+      outline: none;
+      transition: border-bottom-color 0.2s;
+    }
+    .text-input:focus,
+    .number-input:focus,
+    .url-input:focus { border-bottom-color: var(--accent-gold); }
+    .text-input::placeholder,
+    .number-input::placeholder,
+    .url-input::placeholder { color: var(--text-muted); }
+
+    /* ─── Custom Select ─────────────────────────────────────────── */
+    .custom-select-wrapper { position: relative; }
+    .custom-select {
+      width: 100%;
+      background: var(--bg-tertiary);
+      border: 1px solid var(--border);
+      border-bottom: 2px solid var(--border);
+      color: var(--text-primary);
+      font-family: 'DM Mono', monospace;
+      font-size: 12px;
+      padding: 11px 40px 11px 13px;
+      border-radius: 3px;
+      outline: none;
+      appearance: none;
+      cursor: pointer;
+      transition: border-bottom-color 0.2s;
+    }
+    .custom-select:focus { border-bottom-color: var(--accent-gold); }
+    .custom-select option { background: var(--bg-secondary); color: var(--text-primary); }
+    .select-arrow {
+      position: absolute;
+      right: 13px;
+      top: 50%;
+      transform: translateY(-50%);
+      pointer-events: none;
+      color: var(--accent-gold);
+      font-size: 10px;
+    }
+
+    /* ─── Grid ──────────────────────────────────────────────────── */
+    .field-grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+    @media (max-width: 580px) {
+      .field-grid-2 { grid-template-columns: 1fr; }
+    }
+
+    /* ─── Calculated Display ────────────────────────────────────── */
+    .calculated-display {
+      background: rgba(201, 168, 76, 0.07);
+      border: 1px solid var(--accent-gold-muted);
+      border-radius: 3px;
+      padding: 14px 16px;
+      margin-bottom: 8px;
+    }
+    .calc-label {
+      font-size: 9px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--accent-gold);
+      margin-bottom: 5px;
+    }
+    .calc-value {
+      font-family: 'Playfair Display', serif;
+      font-size: 26px;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+    .calc-subtext {
+      font-size: 11px;
+      color: var(--text-secondary);
+      margin-top: 3px;
+    }
+
+    /* ─── Field Errors ──────────────────────────────────────────── */
+    .field-error {
+      font-size: 11px;
+      color: var(--accent-gold);
+      margin-top: 5px;
+      display: none;
+    }
+    .field-error.visible { display: block; }
+
+    /* ─── Buttons ───────────────────────────────────────────────── */
+    .btn-primary {
+      width: 100%;
+      background: var(--accent-gold);
+      color: var(--bg-primary);
+      border: none;
+      font-family: 'Playfair Display', serif;
+      font-size: 17px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      padding: 17px 32px;
+      cursor: pointer;
+      border-radius: 3px;
+      transition: background 0.15s, transform 0.1s;
+      margin-bottom: 10px;
+      display: block;
+    }
+    .btn-primary:hover { background: #d4b65a; transform: translateY(-1px); }
+    .btn-primary:active { transform: translateY(0); }
+
+    .btn-secondary {
+      width: 100%;
+      background: transparent;
+      color: var(--text-secondary);
+      border: 1px solid var(--border);
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      padding: 12px 24px;
+      cursor: pointer;
+      border-radius: 3px;
+      transition: border-color 0.15s, color 0.15s;
+      display: block;
+      width: 100%;
+    }
+    .btn-secondary:hover { border-color: var(--text-secondary); color: var(--text-primary); }
+
+    .btn-email {
+      width: 100%;
+      background: transparent;
+      color: var(--accent-gold);
+      border: 1px solid var(--accent-gold);
+      font-family: 'DM Mono', monospace;
+      font-size: 12px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      padding: 15px 24px;
+      cursor: pointer;
+      border-radius: 3px;
+      transition: background 0.15s;
+      margin-top: 24px;
+      display: block;
+      width: 100%;
+    }
+    .btn-email:hover { background: rgba(201, 168, 76, 0.1); }
+    .btn-email:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    .form-actions { margin-top: 28px; }
+
+    /* ─── Results Panel ─────────────────────────────────────────── */
+    #results-panel {
+      display: none;
+      margin-top: 52px;
+    }
+    #results-panel.visible {
+      display: block;
+      animation: slideIn 0.55s ease forwards;
+    }
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ─── Results Top Card ──────────────────────────────────────── */
+    .results-top-card {
+      background: var(--bg-secondary);
+      border: 1px solid var(--accent-gold-muted);
+      border-radius: 4px;
+      padding: 36px;
+      margin-bottom: 20px;
+      position: relative;
+      overflow: hidden;
+    }
+    .results-top-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: var(--accent-gold);
+    }
+    .results-eyebrow {
+      font-size: 9px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--accent-gold);
+      margin-bottom: 8px;
+    }
+    .results-school-name {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(26px, 4vw, 40px);
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 24px;
+      line-height: 1.15;
+    }
+    .results-score-row {
+      display: flex;
+      align-items: flex-end;
+      gap: 28px;
+      flex-wrap: wrap;
+      margin-bottom: 24px;
+    }
+    .results-score-label {
+      font-size: 10px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--text-secondary);
+      margin-bottom: 5px;
+    }
+    .results-score-number {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(56px, 9vw, 88px);
+      font-weight: 900;
+      line-height: 1;
+    }
+    .grade-badge {
+      width: 62px;
+      height: 62px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Playfair Display', serif;
+      font-size: 26px;
+      font-weight: 700;
+      border: 2px solid transparent;
+    }
+    .recommendation-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      padding: 7px 14px;
+      border-radius: 2px;
+      display: inline-block;
+      border: 1px solid transparent;
+    }
+    .results-penetration {
+      display: inline-flex;
+      align-items: center;
+      gap: 14px;
+      background: rgba(201, 168, 76, 0.07);
+      border: 1px solid var(--accent-gold-muted);
+      border-radius: 3px;
+      padding: 12px 16px;
+    }
+    .penetration-rate-label {
+      font-size: 10px;
+      letter-spacing: 1px;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+    }
+    .penetration-rate-value {
+      font-family: 'Playfair Display', serif;
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--accent-gold);
+    }
+    .results-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 24px;
+      margin-top: 20px;
+      padding-top: 20px;
+      border-top: 1px solid var(--border);
+    }
+    .results-meta-item { display: flex; flex-direction: column; gap: 3px; }
+    .meta-label {
+      font-size: 9px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--text-secondary);
+    }
+    .meta-value { font-size: 12px; color: var(--text-primary); }
+    .meta-link { color: var(--accent-gold); text-decoration: none; font-size: 12px; }
+    .meta-link:hover { text-decoration: underline; }
+
+    /* ─── Key Stats Row ─────────────────────────────────────────── */
+    .key-stats-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+    @media (max-width: 560px) {
+      .key-stats-row { grid-template-columns: 1fr; }
+    }
+    .key-stat-card {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 20px;
+    }
+    .key-stat-heading {
+      font-size: 9px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+    .key-stat-item {
+      font-size: 12px;
+      padding: 8px 0;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+    }
+    .key-stat-item:last-child { border-bottom: none; }
+    .key-stat-arrow { flex-shrink: 0; margin-top: 1px; }
+
+    /* ─── Section Breakdown Header ──────────────────────────────── */
+    .results-breakdown-header {
+      margin-bottom: 16px;
+    }
+    .results-breakdown-eyebrow {
+      font-size: 9px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--accent-gold);
+      margin-bottom: 4px;
+    }
+    .results-breakdown-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 24px;
+      font-weight: 700;
+    }
+
+    /* ─── Section Result Cards ──────────────────────────────────── */
+    .section-result-card {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 22px;
+      margin-bottom: 14px;
+    }
+    .section-result-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 14px;
+    }
+    .section-result-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 17px;
+      font-weight: 600;
+    }
+    .section-result-weight {
+      font-size: 10px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--text-secondary);
+      margin-top: 3px;
+    }
+    .section-result-score-wrap { text-align: right; }
+    .section-result-score-number {
+      font-family: 'Playfair Display', serif;
+      font-size: 22px;
+      font-weight: 700;
+    }
+    .section-result-score-denom {
+      font-size: 13px;
+      color: var(--text-secondary);
+    }
+
+    /* ─── Score Bar ─────────────────────────────────────────────── */
+    .score-bar-track {
+      height: 5px;
+      background: var(--bg-tertiary);
+      border-radius: 3px;
+      overflow: hidden;
+      margin-bottom: 14px;
+    }
+    .score-bar-fill {
+      height: 100%;
+      border-radius: 3px;
+      width: 0%;
+      transition: width 0.9s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .section-result-interpretation {
+      font-size: 12px;
+      color: var(--text-secondary);
+      line-height: 1.75;
+    }
+
+    /* ─── Email Status ──────────────────────────────────────────── */
+    .email-status {
+      text-align: center;
+      font-size: 12px;
+      margin-top: 10px;
+      min-height: 18px;
+    }
+    .email-status.success { color: var(--success); }
+    .email-status.error   { color: var(--danger); }
+
+    /* ─── Live Score Widget ─────────────────────────────────────── */
+    .live-score-widget {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: var(--bg-secondary);
+      border: 1px solid var(--accent-gold-muted);
+      border-radius: 4px;
+      padding: 14px 18px;
+      z-index: 200;
+      text-align: center;
+      min-width: 110px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.6);
+      transition: border-color 0.3s;
+    }
+    .live-score-label {
+      font-size: 8px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--text-secondary);
+      margin-bottom: 3px;
+    }
+    .live-score-number {
+      font-family: 'Playfair Display', serif;
+      font-size: 26px;
+      font-weight: 700;
+      line-height: 1;
+      transition: color 0.3s;
+    }
+    .live-score-grade {
+      font-size: 9px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-top: 5px;
+      transition: color 0.3s;
+    }
+    @media (max-width: 480px) {
+      .live-score-widget { bottom: 12px; right: 12px; padding: 10px 14px; min-width: 90px; }
+      .live-score-number { font-size: 20px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── Sticky Progress Bar ──────────────────────────────────────── -->
+  <div class="progress-bar-container">
+    <div class="progress-label">
+      Evaluation Progress — <span id="progress-text">0 of 7 sections complete</span>
+    </div>
+    <div class="progress-track">
+      <div class="progress-fill" id="progress-fill"></div>
+    </div>
+  </div>
+
+  <!-- ── Main Container ───────────────────────────────────────────── -->
+  <div class="container">
+
+    <!-- Header -->
+    <header class="site-header">
+      <div class="header-eyebrow">Internal Intelligence Tool</div>
+      <h1 class="header-title"><span>[TBD]</span> School Predictability Scorer</h1>
+      <div class="header-subtitle">Drop Market Viability Evaluation Tool</div>
+      <p class="header-description">Score a school's potential before investing in a CLC license. Results sent to your inbox.</p>
+    </header>
+
+    <!-- ─────────────────────── FORM ──────────────────────────── -->
+    <form id="scorer-form" novalidate>
+
+      <!-- ── Section 0: School Identity ─────────────────────────── -->
+      <div class="section-card" id="card-section-0">
+        <div class="section-header" onclick="toggleSection('section-0')">
+          <div class="section-header-left">
+            <div class="section-eyebrow">Section 0</div>
+            <h2 class="section-title">School Identity</h2>
+            <div class="section-weight">Required — Not Scored</div>
+          </div>
+          <div class="section-header-right">
+            <span class="section-complete-badge" id="badge-section-0">Complete ✓</span>
+            <div class="section-toggle" id="toggle-section-0">▼</div>
+          </div>
+        </div>
+        <div class="section-body" id="body-section-0">
+
+          <div class="field-grid-2">
+            <div class="field-group">
+              <label class="field-label" for="school-name">School Name *</label>
+              <input type="text" id="school-name" class="text-input" placeholder="e.g. Colorado Mesa University">
+              <div class="field-error" id="err-school-name">School name is required.</div>
+            </div>
+            <div class="field-group">
+              <label class="field-label" for="school-state">State</label>
+              <input type="text" id="school-state" class="text-input" placeholder="e.g. Colorado">
+            </div>
+          </div>
+
+          <div class="field-group">
+            <label class="field-label" for="school-division">Division &amp; Conference</label>
+            <input type="text" id="school-division" class="text-input" placeholder="e.g. DII — RMAC">
+          </div>
+
+          <div class="field-grid-2">
+            <div class="field-group">
+              <label class="field-label" for="facebook-url">Facebook Alumni Group URL</label>
+              <input type="url" id="facebook-url" class="url-input" placeholder="https://facebook.com/groups/...">
+            </div>
+            <div class="field-group">
+              <label class="field-label" for="reddit-url">Subreddit URL</label>
+              <input type="url" id="reddit-url" class="url-input" placeholder="https://reddit.com/r/SchoolName">
+            </div>
+          </div>
+
+          <div class="field-grid-2">
+            <div class="field-group">
+              <label class="field-label" for="total-alumni">Est. Total Living Alumni *</label>
+              <input type="number" id="total-alumni" class="number-input" placeholder="e.g. 45000" min="1">
+              <div class="field-error" id="err-total-alumni">Required — must be greater than 0.</div>
+            </div>
+            <div class="field-group">
+              <label class="field-label" for="fb-members">Facebook Alumni Group Members *</label>
+              <input type="number" id="fb-members" class="number-input" placeholder="e.g. 8500" min="0">
+              <div class="field-error" id="err-fb-members">Facebook group member count is required.</div>
+            </div>
+          </div>
+
+          <div class="field-group">
+            <label class="field-label" for="school-founded">Year Founded</label>
+            <input type="number" id="school-founded" class="number-input" placeholder="e.g. 1925" min="1600" max="2024">
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ── Section 1: Alumni Identity Strength ─────────────────── -->
+      <div class="section-card" id="card-section-1">
+        <div class="section-header" onclick="toggleSection('section-1')">
+          <div class="section-header-left">
+            <div class="section-eyebrow">Section 1 — 25% Weight</div>
+            <h2 class="section-title">Alumni Identity Strength</h2>
+            <div class="section-weight">Weight: 25% of total score</div>
+          </div>
+          <div class="section-header-right">
+            <span class="section-complete-badge" id="badge-section-1">Complete ✓</span>
+            <div class="section-toggle" id="toggle-section-1">▼</div>
+          </div>
+        </div>
+        <div class="section-body" id="body-section-1">
+
+          <div class="section-description">
+            How central is this school to alumni identity? The ratio of engaged alumni online to total alumni is the most predictive single signal.
+          </div>
+
+          <!-- Penetration Rate Auto-Calc Display -->
+          <div class="calculated-display" id="penetration-display">
+            <div class="calc-label">Auto-Calculated — Facebook Penetration Rate</div>
+            <div class="calc-value" id="penetration-value">—</div>
+            <div class="calc-subtext" id="penetration-subtext">Enter alumni counts in Section 0 to auto-calculate</div>
+          </div>
+
+          <div class="gold-divider"></div>
+
+          <div class="field-group">
+            <label class="field-label">1A — Facebook Penetration Rate (Auto-Scored from Section 0)</label>
+            <div class="calculated-display">
+              <div class="calc-label">Score</div>
+              <div class="calc-value" id="s1a-score-val">—</div>
+              <div class="calc-subtext" id="s1a-score-desc">Waiting for alumni data in Section 0…</div>
+            </div>
+          </div>
+
+          <div class="field-group">
+            <label class="field-label" for="s1b">1B — Facebook Group Activity Level *</label>
+            <div class="field-question">"How active is the alumni Facebook group?"</div>
+            <div class="custom-select-wrapper">
+              <select id="s1b" class="custom-select">
+                <option value="">— Select one —</option>
+                <option value="5">Very active — multiple posts per day, high comment engagement</option>
+                <option value="4">Active — several posts per week with comments</option>
+                <option value="3">Moderate — weekly posts, some engagement</option>
+                <option value="2">Low — monthly posts, minimal engagement</option>
+                <option value="1">Ghost town — posts are rare or years old</option>
+              </select>
+              <span class="select-arrow">▼</span>
+            </div>
+            <div class="field-error" id="err-s1b">Please select an option.</div>
+          </div>
+
+          <div class="field-group">
+            <label class="field-label" for="s1c">1C — Reddit Community Activity *</label>
+            <div class="field-question">"How active is the school's subreddit?"</div>
+            <div class="custom-select-wrapper">
+              <select id="s1c" class="custom-select">
+                <option value="">— Select one —</option>
+                <option value="5">Thriving — daily posts, game reactions, nostalgia threads, active community</option>
+                <option value="4">Active — regular posts, some community discussion</option>
+                <option value="3">Exists but quiet — subreddit exists but low traffic</option>
+                <option value="2">Barely exists — subreddit has few posts in past year</option>
+                <option value="1">No subreddit found</option>
+              </select>
+              <span class="select-arrow">▼</span>
+            </div>
+            <div class="field-error" id="err-s1c">Please select an option.</div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ── Section 2: Merch Frustration Index ──────────────────── -->
+      <div class="section-card" id="card-section-2">
+        <div class="section-header" onclick="toggleSection('section-2')">
+          <div class="section-header-left">
+            <div class="section-eyebrow">Section 2 — 20% Weight</div>
+            <h2 class="section-title">Merch Frustration Index</h2>
+            <div class="section-weight">Weight: 20% of total score</div>
+          </div>
+          <div class="section-header-right">
+            <span class="section-complete-badge" id="badge-section-2">Complete ✓</span>
+            <div class="section-toggle" id="toggle-section-2">▼</div>
+          </div>
+        </div>
+        <div class="section-body" id="body-section-2">
+
+          <div class="section-description">
+            Pre-qualified demand signal. Alumni complaining about bad merch = buyers with wallets open, waiting.
+          </div>
+
+          <div class="field-group">
+            <label class="field-label" for="s2a">2A — Alumni Merch Complaints Online *</label>
+            <div class="field-question">"How often do you see alumni complaining about merchandise quality or availability?"</div>
+            <div class="custom-select-wrapper">
+              <select id="s2a" class="custom-select">
+                <option value="">— Select one —</option>
+                <option value="5">Frequent — multiple complaints/threads visible</option>
+                <option value="4">Occasional — some complaints or 'wish we had better merch' posts</option>
+                <option value="3">Rare — one or two mentions</option>
+                <option value="2">None found</option>
+                <option value="1">Couldn't assess</option>
+              </select>
+              <span class="select-arrow">▼</span>
+            </div>
+            <div class="field-error" id="err-s2a">Please select an option.</div>
+          </div>
+
+          <div class="field-group">
+            <label class="field-label" for="s2b">2B — Etsy / Redbubble Unlicensed Seller Presence *</label>
+            <div class="field-question">"Are unlicensed sellers actively selling this school's designs on Etsy or Redbubble?"</div>
+            <div class="custom-select-wrapper">
+              <select id="s2b" class="custom-select">
+                <option value="">— Select one —</option>
+                <option value="5">Yes, multiple sellers with good review counts — proven demand</option>
+                <option value="4">Yes, a few sellers but low volume</option>
+                <option value="3">1–2 sellers, minimal traction</option>
+                <option value="2">No unlicensed sellers found</option>
+                <option value="1">Didn't check</option>
+              </select>
+              <span class="select-arrow">▼</span>
+            </div>
+            <div class="field-error" id="err-s2b">Please select an option.</div>
+          </div>
+
+          <div class="field-group">
+            <label class="field-label" for="s2c">2C — Current Licensed Merch Quality Assessment *</label>
+            <div class="field-question">"Rate the quality and cultural resonance of merchandise currently available."</div>
+            <div class="custom-select-wrapper">
+              <select id="s2c" class="custom-select">
+                <option value="">— Select one —</option>
+                <option value="5">Nothing exists or near-nothing — massive gap</option>
+                <option value="4">Generic clip-art logo on blanks only — no cultural design</option>
+                <option value="3">Basic licensed product, no soul or specificity</option>
+                <option value="2">Decent product exists, some cultural investment</option>
+                <option value="1">Well-served — strong licensed product already available</option>
+              </select>
+              <span class="select-arrow">▼</span>
+            </div>
+            <div class="field-error" id="err-s2c">Please select an option.</div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ── Section 3: Athletic Emotional Relevance ─────────────── -->
+      <div class="section-card" id="card-section-3">
+        <div class="section-header" onclick="toggleSection('section-3')">
+          <div class="section-header-left">
+            <div class="section-eyebrow">Section 3 — 20% Weight</div>
+            <h2 class="section-title">Athletic Emotional Relevance</h2>
+            <div class="section-weight">Weight: 20% of total score</div>
+          </div>
+          <div class="section-header-right">
+            <span class="section-complete-badge" id="badge-section-3">Complete ✓</span>
+            <div class="section-toggle" id="toggle-section-3">▼</div>
+          </div>
+        </div>
+        <div class="section-body" id="body-section-3">
+
+          <div class="section-description">
+            Athletic programs that generate pride, rivalry heat, and defining moments drive purchase urgency. Measure the emotional temperature of the program.
+          </div>
+
+          <div class="field-group">
+            <label class="field-label" for="s3a">3A — Recent Athletic Success or Defining Moment *</label>
+            <div class="field-question">"Has this school had a championship, tournament run, or defining athletic moment in the last 10 years?"</div>
+            <div class="custom-select-wrapper">
+              <select id="s3a" class="custom-select">
+                <option value="">— Select one —</option>
+                <option value="5">National or conference championship in last 5 years — strong emotional anchor</option>
+                <option value="4">Significant playoff run or historic moment in last 5 years</option>
+                <option value="3">Notable moment 5–10 years ago, still referenced</option>
+                <option value="2">Some history but nothing recent or widely referenced</option>
+                <option value="1">No defining athletic moments found</option>
+              </select>
+              <span class="select-arrow">▼</span>
+            </div>
+            <div class="field-error" id="err-s3a">Please select an option.</div>
+          </div>
+
+          <div class="field-group">
+            <label class="field-label" for="s3b">3B — Rivalry Intensity *</label>
+            <div class="field-question">"Does this school have an active, emotionally-charged rival that alumni talk about frequently?"</div>
+            <div class="custom-select-wrapper">
+              <select id="s3b" class="custom-select">
+                <option value="">— Select one —</option>
+                <option value="5">Intense rivalry — alumni talk about it constantly, game is a cultural event</option>
+                <option value="4">Clear rival exists with real emotional investment</option>
+                <option value="3">Mild rivalry — exists but not passionate</option>
+                <option value="2">Weak or no clear rival</option>
+                <option value="1">No meaningful rivalry found</option>
+              </select>
+              <span class="select-arrow">▼</span>
+            </div>
+            <div class="field-error" id="err-s3b">Please select an option.</div>
+          </div>
+
+          <div class="field-group">
+            <label class="field-label" for="s3c">3C — In-Person Attendance Culture *</label>
+            <div class="field-question">"Does this school have a culture of fans actually attending games, relative to its size?"</div>
+            <div class="custom-select-wrapper">
+              <select id="s3c" class="custom-select">
+                <option value="">— Select one —</option>
+                <option value="5">Strong — games are community events, strong attendance relative to enrollment</option>
+                <option value="4">Good — solid attendance, athletic events are part of campus culture</option>
+                <option value="3">Average — moderate attendance, not a defining school identity trait</option>
+                <option value="2">Weak — athletics exist but community engagement is low</option>
+                <option value="1">Minimal — games are largely ignored by students and community</option>
+              </select>
+              <span class="select-arrow">▼</span>
+            </div>
+            <div class="field-error" id="err-s3c">Please select an option.</div>
+          </div>
+
+          <div class="field-group">
+            <label class="field-label" for="s3d">3D — Conference or Division Identity *</label>
+            <div class="field-question">"Does conference or division membership give the program a clear identity or narrative?"</div>
+            <div class="custom-select-wrapper">
+              <select id="s3d" class="custom-select">
+                <option value="">— Select one —</option>
+                <option value="5">Recently moved up in division or joined new conference — activated alumni energy</option>
+                <option value="4">Long-standing conference with strong identity and rivalries</option>
+                <option value="3">Generic conference membership, no particular narrative</option>
+                <option value="2">Recently moved down or in unstable conference situation</option>
+                <option value="1">Independent or no meaningful conference context</option>
+              </select>
+              <span class="select-arrow">▼</span>
+            </div>
+            <div class="field-error" id="err-s3d">Please select an option.</div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ── Section 4: Alumni Geographic Concentration ──────────── -->
+      <div class="section-card" id="card-section-4">
+        <div class="section-header" onclick="toggleSection('section-4')">
+          <div class="section-header-left">
+            <div class="section-eyebrow">Section 4 — 15% Weight</div>
+            <h2 class="section-title">Alumni Geographic Concentration</h2>
+            <div class="section-weight">Weight: 15% of total score</div>
+          </div>
+          <div class="section-header-right">
+            <span class="section-complete-badge" id="badge-section-4">Complete ✓</span>
+            <div class="section-toggle" id="toggle-section-4">▼</div>
+          </div>
+        </div>
+        <div class="section-body" id="body-section-4">
+
+          <div class="section-description">
+            Concentrated alumni communities amplify word-of-mouth. Alumni who live near each other gather, compare, and buy together.
+          </div>
+
+          <div class="field-group">
+            <label class="field-label" for="s4a">4A — Geographic Alumni Concentration *</label>
+            <div class="field-question">"Where do alumni primarily live relative to the school?"</div>
+            <div class="custom-select-wrapper">
+              <select id="s4a" class="custom-select">
+                <option value="">— Select one —</option>
+                <option value="5">Highly concentrated — majority live within 100 miles of campus</option>
+                <option value="4">Mostly regional — majority in the same state or multi-state region</option>
+                <option value="3">Mixed — split between regional and national</option>
+                <option value="2">Nationally dispersed — alumni spread across many states</option>
+                <option value="1">International / highly scattered — hard to activate geographically</option>
+              </select>
+              <span class="select-arrow">▼</span>
+            </div>
+            <div class="field-error" id="err-s4a">Please select an option.</div>
+          </div>
+
+          <div class="field-group">
+            <label class="field-label" for="s4b">4B — Regional School Identity *</label>
+            <div class="field-question">"Is this school considered 'the school' or a key institution for its city or region?"</div>
+            <div class="custom-select-wrapper">
+              <select id="s4b" class="custom-select">
+                <option value="">— Select one —</option>
+                <option value="5">Yes — the school is a regional anchor institution with strong local pride</option>
+                <option value="4">Somewhat — recognized regionally, some civic connection</option>
+                <option value="3">Neutral — one of several schools in the area, no dominant identity</option>
+                <option value="2">Overshadowed — a larger local school dominates regional identity</option>
+                <option value="1">Unknown or no regional significance found</option>
+              </select>
+              <span class="select-arrow">▼</span>
+            </div>
+            <div class="field-error" id="err-s4b">Please select an option.</div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ── Section 5: School Narrative Distinctiveness ─────────── -->
+      <div class="section-card" id="card-section-5">
+        <div class="section-header" onclick="toggleSection('section-5')">
+          <div class="section-header-left">
+            <div class="section-eyebrow">Section 5 — 10% Weight</div>
+            <h2 class="section-title">School Narrative Distinctiveness</h2>
+            <div class="section-weight">Weight: 10% of total score</div>
+          </div>
+          <div class="section-header-right">
+            <span class="section-complete-badge" id="badge-section-5">Complete ✓</span>
+            <div class="section-toggle" id="toggle-section-5">▼</div>
+          </div>
+        </div>
+        <div class="section-body" id="body-section-5">
+
+          <div class="section-description">
+            Can you tell this school's story in one sentence that no other school could claim? Distinct narratives make design briefs — and they make alumni buy.
+          </div>
+
+          <div class="field-group">
+            <label class="field-label" for="s5a">5A — Founding Story / Mission Uniqueness *</label>
+            <div class="field-question">"Does this school have a founding story, religious affiliation, military heritage, or defining mission?"</div>
+            <div class="custom-select-wrapper">
+              <select id="s5a" class="custom-select">
+                <option value="">— Select one —</option>
+                <option value="5">Very distinctive — founding story or mission is widely known and emotionally resonant</option>
+                <option value="4">Notable — clear institutional identity beyond 'university'</option>
+                <option value="3">Mildly distinctive — some character but not deeply defining</option>
+                <option value="2">Generic — similar to hundreds of other regional schools</option>
+                <option value="1">No distinctive narrative found</option>
+              </select>
+              <span class="select-arrow">▼</span>
+            </div>
+            <div class="field-error" id="err-s5a">Please select an option.</div>
+          </div>
+
+          <div class="field-group">
+            <label class="field-label" for="s5b">5B — Geographic or Environmental Identity *</label>
+            <div class="field-question">"Does the school's physical location or environment contribute to its identity in a way alumni reference?"</div>
+            <div class="custom-select-wrapper">
+              <select id="s5b" class="custom-select">
+                <option value="">— Select one —</option>
+                <option value="5">Inseparable — mountains, coast, city, or landscape is part of the school's soul</option>
+                <option value="4">Strong connection — location is referenced often by alumni</option>
+                <option value="3">Some connection — location mentioned but not defining</option>
+                <option value="2">Weak connection — could be anywhere</option>
+                <option value="1">No geographic identity found</option>
+              </select>
+              <span class="select-arrow">▼</span>
+            </div>
+            <div class="field-error" id="err-s5b">Please select an option.</div>
+          </div>
+
+          <div class="field-group">
+            <label class="field-label" for="s5c">5C — Signature Tradition *</label>
+            <div class="field-question">"Does this school have a specific tradition, ritual, landmark, or annual event that alumni reference as uniquely theirs?"</div>
+            <div class="custom-select-wrapper">
+              <select id="s5c" class="custom-select">
+                <option value="">— Select one —</option>
+                <option value="5">Yes — multiple strong traditions that appear constantly in alumni content</option>
+                <option value="4">Yes — one strong tradition that is widely known</option>
+                <option value="3">Somewhat — a tradition exists but isn't widely referenced</option>
+                <option value="2">Weak — vague traditions but nothing specific or memorable</option>
+                <option value="1">No distinctive tradition found</option>
+              </select>
+              <span class="select-arrow">▼</span>
+            </div>
+            <div class="field-error" id="err-s5c">Please select an option.</div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ── Section 6: Alumni Association Activity ───────────────── -->
+      <div class="section-card" id="card-section-6">
+        <div class="section-header" onclick="toggleSection('section-6')">
+          <div class="section-header-left">
+            <div class="section-eyebrow">Section 6 — 5% Weight</div>
+            <h2 class="section-title">Alumni Association Activity</h2>
+            <div class="section-weight">Weight: 5% of total score</div>
+          </div>
+          <div class="section-header-right">
+            <span class="section-complete-badge" id="badge-section-6">Complete ✓</span>
+            <div class="section-toggle" id="toggle-section-6">▼</div>
+          </div>
+        </div>
+        <div class="section-body" id="body-section-6">
+
+          <div class="section-description">
+            The alumni association is your co-launch partner. A strong one is a distribution channel. A weak one means you're launching cold.
+          </div>
+
+          <div class="field-group">
+            <label class="field-label" for="s6a">6A — Alumni Association Digital Presence *</label>
+            <div class="field-question">"How active is the alumni association's website and social media?"</div>
+            <div class="custom-select-wrapper">
+              <select id="s6a" class="custom-select">
+                <option value="">— Select one —</option>
+                <option value="5">Very active — regular posts, updated news, active social channels</option>
+                <option value="4">Active — mostly current content, some regular communication</option>
+                <option value="3">Moderate — occasional updates, not consistently active</option>
+                <option value="2">Weak — outdated website, sporadic social presence</option>
+                <option value="1">No alumni association found or entirely inactive</option>
+              </select>
+              <span class="select-arrow">▼</span>
+            </div>
+            <div class="field-error" id="err-s6a">Please select an option.</div>
+          </div>
+
+          <div class="field-group">
+            <label class="field-label" for="s6b">6B — Event Activity *</label>
+            <div class="field-question">"Does the alumni association host regular events — reunions, regional chapters, homecoming activities?"</div>
+            <div class="custom-select-wrapper">
+              <select id="s6b" class="custom-select">
+                <option value="">— Select one —</option>
+                <option value="5">Yes — regular events across multiple regions with visible attendance</option>
+                <option value="4">Yes — annual events with decent participation</option>
+                <option value="3">Occasional events, low visibility</option>
+                <option value="2">Rarely or never hosts events</option>
+                <option value="1">No event history found</option>
+              </select>
+              <span class="select-arrow">▼</span>
+            </div>
+            <div class="field-error" id="err-s6b">Please select an option.</div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ── Section 7: Merchandise Desert Score ─────────────────── -->
+      <div class="section-card" id="card-section-7">
+        <div class="section-header" onclick="toggleSection('section-7')">
+          <div class="section-header-left">
+            <div class="section-eyebrow">Section 7 — 5% Weight</div>
+            <h2 class="section-title">Merchandise Desert Score</h2>
+            <div class="section-weight">Weight: 5% of total score</div>
+          </div>
+          <div class="section-header-right">
+            <span class="section-complete-badge" id="badge-section-7">Complete ✓</span>
+            <div class="section-toggle" id="toggle-section-7">▼</div>
+          </div>
+        </div>
+        <div class="section-body" id="body-section-7">
+
+          <div class="section-description">
+            How big is the void? The worse the current market, the bigger the opportunity — if demand exists.
+          </div>
+
+          <div class="field-group">
+            <label class="field-label" for="s7a">7A — Fanatics Coverage *</label>
+            <div class="field-question">"Does Fanatics carry licensed merchandise for this school?"</div>
+            <div class="custom-select-wrapper">
+              <select id="s7a" class="custom-select">
+                <option value="">— Select one —</option>
+                <option value="5">No coverage found — complete void</option>
+                <option value="4">Minimal — 1–3 generic items only</option>
+                <option value="3">Partial — some items, all generic</option>
+                <option value="2">Moderate — reasonable selection, no cultural design</option>
+                <option value="1">Strong — well-stocked on Fanatics</option>
+              </select>
+              <span class="select-arrow">▼</span>
+            </div>
+            <div class="field-error" id="err-s7a">Please select an option.</div>
+          </div>
+
+          <div class="field-group">
+            <label class="field-label" for="s7b">7B — Bookstore / Campus Store Quality *</label>
+            <div class="field-question">"What is the quality of merchandise available at the school's official bookstore or campus store?"</div>
+            <div class="custom-select-wrapper">
+              <select id="s7b" class="custom-select">
+                <option value="">— Select one —</option>
+                <option value="5">Nothing available or store is inactive</option>
+                <option value="4">Very low quality — basic blanks with clip-art prints</option>
+                <option value="3">Below average — generic licensed items, no design investment</option>
+                <option value="2">Average — standard collegiate bookstore product</option>
+                <option value="1">Above average — strong official store product line</option>
+              </select>
+              <span class="select-arrow">▼</span>
+            </div>
+            <div class="field-error" id="err-s7b">Please select an option.</div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ── Form Actions ───────────────────────────────────────── -->
+      <div class="form-actions">
+        <button type="submit" class="btn-primary">EVALUATE SCHOOL</button>
+        <button type="button" class="btn-secondary" onclick="resetForm()">Reset / Evaluate New School</button>
+      </div>
+
+    </form>
+    <!-- end form -->
+
+    <!-- ─────────────── RESULTS PANEL ────────────────────────────── -->
+    <div id="results-panel">
+
+      <!-- Top Summary Card -->
+      <div class="results-top-card">
+        <div class="results-eyebrow">Predictability Report</div>
+        <div class="results-school-name" id="result-school-name">—</div>
+
+        <div class="results-score-row">
+          <div>
+            <div class="results-score-label">Overall Predictability Score</div>
+            <div class="results-score-number" id="result-score">—</div>
+          </div>
+          <div>
+            <div class="results-score-label">Grade</div>
+            <div class="grade-badge" id="result-grade">—</div>
+          </div>
+          <div>
+            <div class="results-score-label">Recommendation</div>
+            <div class="recommendation-label" id="result-recommendation">—</div>
+          </div>
+        </div>
+
+        <div class="results-penetration">
+          <div>
+            <div class="penetration-rate-label">Facebook Penetration Rate</div>
+            <div class="penetration-rate-value" id="result-penetration">—</div>
+          </div>
+        </div>
+
+        <div class="results-meta" id="results-meta"></div>
+      </div>
+
+      <!-- Key Strengths / Risks -->
+      <div class="key-stats-row">
+        <div class="key-stat-card">
+          <div class="key-stat-heading" style="color: var(--success);">Key Strengths</div>
+          <div id="key-strengths"></div>
+        </div>
+        <div class="key-stat-card">
+          <div class="key-stat-heading" style="color: var(--danger);">Key Risks</div>
+          <div id="key-risks"></div>
+        </div>
+      </div>
+
+      <!-- Section Breakdown -->
+      <div class="results-breakdown-header">
+        <div class="results-breakdown-eyebrow">Section-by-Section Analysis</div>
+        <div class="results-breakdown-title">Score Breakdown</div>
+      </div>
+      <div id="section-results"></div>
+
+      <!-- Email CTA -->
+      <button class="btn-email" id="send-email-btn" onclick="sendReport()">
+        ↗ &nbsp;Send Report to Email
+      </button>
+      <div class="email-status" id="email-status"></div>
+
+    </div>
+    <!-- end results panel -->
+
+  </div>
+  <!-- end container -->
+
+  <!-- ── Live Score Widget ────────────────────────────────────────── -->
+  <div class="live-score-widget" id="live-widget">
+    <div class="live-score-label">Live Score</div>
+    <div class="live-score-number" id="live-number">—</div>
+    <div class="live-score-grade" id="live-grade" style="color: var(--text-secondary);">—</div>
+  </div>
+
+  <!-- ──────────────────────── JAVASCRIPT ──────────────────────────── -->
+  <script>
+    // ================================================================
+    // EMAILJS CONFIGURATION
+    // TODO: Replace the three placeholder values below with your
+    //       actual EmailJS credentials before deploying.
+    // ================================================================
+    const EMAILJS_PUBLIC_KEY   = 'Phxr-92D0I-ZrvYGV';
+    const EMAILJS_SERVICE_ID   = 'service_w2e4rjc';
+    const EMAILJS_TEMPLATE_ID  = 'template_7uqjppq';
+    const RECIPIENT_EMAIL      = 'tavareanbarkley@gmail.com';  // hardcoded
+
+    // Initialize EmailJS
+    emailjs.init(EMAILJS_PUBLIC_KEY);
+
+    // ================================================================
+    // SECTION DEFINITIONS
+    // ================================================================
+    const SECTIONS = [
+      { id: 'section-1', name: 'Alumni Identity Strength',        weight: 0.25, fields: ['s1b', 's1c'],               needsAlumni: true  },
+      { id: 'section-2', name: 'Merch Frustration Index',         weight: 0.20, fields: ['s2a', 's2b', 's2c'],        needsAlumni: false },
+      { id: 'section-3', name: 'Athletic Emotional Relevance',    weight: 0.20, fields: ['s3a', 's3b', 's3c', 's3d'], needsAlumni: false },
+      { id: 'section-4', name: 'Alumni Geographic Concentration', weight: 0.15, fields: ['s4a', 's4b'],               needsAlumni: false },
+      { id: 'section-5', name: 'School Narrative Distinctiveness',weight: 0.10, fields: ['s5a', 's5b', 's5c'],        needsAlumni: false },
+      { id: 'section-6', name: 'Alumni Association Activity',     weight: 0.05, fields: ['s6a', 's6b'],               needsAlumni: false },
+      { id: 'section-7', name: 'Merchandise Desert Score',        weight: 0.05, fields: ['s7a', 's7b'],               needsAlumni: false },
+    ];
+
+    // ================================================================
+    // INTERPRETATION COPY
+    // ================================================================
+    const INTERPRETATIONS = {
+      'section-1': [
+        { min: 4.0, text: 'Strong alumni identity signals. This community is engaged and self-organized online — your launch partner is already assembled.' },
+        { min: 2.5, text: 'Moderate identity signals. Alumni pride exists but the online community isn\'t fully activated. A strong partner outreach strategy will be essential.' },
+        { min: 0,   text: 'Weak identity signals. Low engagement online suggests either a scattered alumni base or low school identity — proceed with caution.' },
+      ],
+      'section-2': [
+        { min: 4.0, text: 'High frustration index. Demand is pre-validated — alumni are already trying to buy something worth wearing and failing. This is your biggest opportunity signal.' },
+        { min: 2.5, text: 'Moderate frustration. Some market gap exists but the urgency isn\'t overwhelming. A well-designed drop can still create demand.' },
+        { min: 0,   text: 'Low frustration index. Either alumni are satisfied with current product or they\'re not actively engaged enough to complain. Harder sell.' },
+      ],
+      'section-3': [
+        { min: 4.0, text: 'Emotionally activated program. Athletic pride, rivalry culture, and recent success give you multiple design angles and natural buying triggers.' },
+        { min: 2.5, text: 'Moderate athletic engagement. The program generates some pride but lacks the emotional heat that drives urgency buying. Timing drops carefully will matter.' },
+        { min: 0,   text: 'Low athletic emotional relevance. The program may not be central to alumni identity. Consider whether a non-athletic cultural angle could substitute.' },
+      ],
+      'section-4': [
+        { min: 4.0, text: 'Geographically concentrated. Word-of-mouth will travel fast. Alumni gather, compare, and activate each other — ideal drop conditions.' },
+        { min: 2.5, text: 'Mixed concentration. Regional pockets exist but the community is spread. A strong digital-first campaign strategy will compensate.' },
+        { min: 0,   text: 'Dispersed alumni base. Harder to build the community momentum that makes drops go viral. Plan for more individual conversion, less organic spread.' },
+      ],
+      'section-5': [
+        { min: 4.0, text: 'Highly distinctive narrative. You have a clear brief to design from. Alumni will immediately recognize themselves in a well-researched collection.' },
+        { min: 2.5, text: 'Moderate distinctiveness. A narrative exists but requires deeper research to surface the specific cultural touchpoints that will resonate.' },
+        { min: 0,   text: 'Generic institutional identity. Harder to design something that feels specific and earned. Extra research investment required before design begins.' },
+      ],
+      'section-6': [
+        { min: 4.0, text: 'Strong alumni association. Your co-launch partner is ready — they have the list, the platform, and the community trust to activate a drop announcement.' },
+        { min: 2.5, text: 'Moderate association. They can co-announce but may need cultivation. Build the relationship before the drop launches.' },
+        { min: 0,   text: 'Weak association. You\'ll be launching without institutional amplification. Build your own email list through social outreach before the campaign opens.' },
+      ],
+      'section-7': [
+        { min: 4.0, text: 'Near-total merchandise desert. The void is your canvas — alumni have nowhere else to go for quality product. First-mover advantage is strong.' },
+        { min: 2.5, text: 'Partial market gap. Basic product exists but the cultural design angle is unclaimed. Your collection will stand out clearly.' },
+        { min: 0,   text: 'Competitive market. Licensed product already exists and has some quality. You\'ll need a sharper design angle to justify the switch.' },
+      ],
+    };
+
+    // ================================================================
+    // SCORING HELPERS
+    // ================================================================
+
+    function val(id) {
+      const v = document.getElementById(id).value;
+      return v === '' ? null : parseFloat(v);
+    }
+
+    function getS1AScore() {
+      const total = parseFloat(document.getElementById('total-alumni').value);
+      const members = parseFloat(document.getElementById('fb-members').value);
+      if (!total || total <= 0 || isNaN(members)) return null;
+      const rate = (members / total) * 100;
+      if (rate >= 25)  return 5;
+      if (rate >= 15)  return 4;
+      if (rate >= 8)   return 3;
+      if (rate >= 3)   return 2;
+      return 1;
+    }
+
+    function getPenetrationRate() {
+      const total = parseFloat(document.getElementById('total-alumni').value);
+      const members = parseFloat(document.getElementById('fb-members').value);
+      if (!total || total <= 0 || isNaN(members)) return null;
+      return (members / total) * 100;
+    }
+
+    function calcSection1() {
+      const s1a = getS1AScore();
+      const s1b = val('s1b');
+      const s1c = val('s1c');
+      let score = 0, wt = 0;
+      if (s1a !== null) { score += s1a * 0.40; wt += 0.40; }
+      if (s1b !== null) { score += s1b * 0.35; wt += 0.35; }
+      if (s1c !== null) { score += s1c * 0.25; wt += 0.25; }
+      return wt === 0 ? null : score / wt;
+    }
+
+    function calcAvg(ids) {
+      const vals = ids.map(id => val(id)).filter(v => v !== null);
+      if (vals.length === 0) return null;
+      return vals.reduce((a, b) => a + b, 0) / vals.length;
+    }
+
+    function calcComposite() {
+      const raw = [
+        calcSection1(),
+        calcAvg(['s2a','s2b','s2c']),
+        calcAvg(['s3a','s3b','s3c','s3d']),
+        calcAvg(['s4a','s4b']),
+        calcAvg(['s5a','s5b','s5c']),
+        calcAvg(['s6a','s6b']),
+        calcAvg(['s7a','s7b']),
+      ];
+      const weights = [0.25, 0.20, 0.20, 0.15, 0.10, 0.05, 0.05];
+      let sum = 0, totalWt = 0;
+      raw.forEach((r, i) => {
+        if (r !== null) { sum += r * weights[i]; totalWt += weights[i]; }
+      });
+      if (totalWt === 0) return null;
+      const normalized = sum / totalWt;
+      return ((normalized - 1) / 4) * 100;
+    }
+
+    function getGrade(score) {
+      if (score >= 85) return { grade: 'A', rec: 'STRONG BUY',  color: '#3FB950', bg: 'rgba(63,185,80,0.12)'   };
+      if (score >= 70) return { grade: 'B', rec: 'BUY',         color: '#7ee787', bg: 'rgba(126,231,135,0.12)' };
+      if (score >= 55) return { grade: 'C', rec: 'HOLD',        color: '#D29922', bg: 'rgba(210,153,34,0.12)'  };
+      if (score >= 40) return { grade: 'D', rec: 'CAUTION',     color: '#f0883e', bg: 'rgba(240,136,62,0.12)'  };
+      return               { grade: 'F', rec: 'SKIP',         color: '#F85149', bg: 'rgba(248,81,73,0.12)'   };
+    }
+
+    function barColor(score) {
+      if (score >= 4.0) return '#3FB950';
+      if (score >= 2.5) return '#D29922';
+      return '#F85149';
+    }
+
+    function interpret(sectionId, score) {
+      const list = INTERPRETATIONS[sectionId];
+      for (const item of list) {
+        if (score >= item.min) return item.text;
+      }
+      return '';
+    }
+
+    // ================================================================
+    // UI REACTIVE UPDATES
+    // ================================================================
+
+    function updatePenetration() {
+      const rate = getPenetrationRate();
+      const s1a  = getS1AScore();
+      const total   = parseFloat(document.getElementById('total-alumni').value) || 0;
+      const members = parseFloat(document.getElementById('fb-members').value)   || 0;
+
+      if (rate !== null) {
+        document.getElementById('penetration-value').textContent = rate.toFixed(1) + '%';
+        document.getElementById('penetration-subtext').textContent =
+          members.toLocaleString() + ' of ' + total.toLocaleString() + ' alumni are in the Facebook group';
+
+        document.getElementById('s1a-score-val').textContent  = s1a + ' / 5';
+        let desc = '';
+        if (rate >= 25) desc = '≥ 25% penetration — 5 pts';
+        else if (rate >= 15) desc = '15–24.9% penetration — 4 pts';
+        else if (rate >= 8)  desc = '8–14.9% penetration — 3 pts';
+        else if (rate >= 3)  desc = '3–7.9% penetration — 2 pts';
+        else desc = '< 3% penetration — 1 pt';
+        document.getElementById('s1a-score-desc').textContent = desc;
+      } else {
+        document.getElementById('penetration-value').textContent  = '—';
+        document.getElementById('penetration-subtext').textContent = 'Enter alumni counts in Section 0 to auto-calculate';
+        document.getElementById('s1a-score-val').textContent  = '—';
+        document.getElementById('s1a-score-desc').textContent = 'Waiting for alumni data in Section 0…';
+      }
+    }
+
+    function updateLiveScore() {
+      const score = calcComposite();
+      const numEl  = document.getElementById('live-number');
+      const grEl   = document.getElementById('live-grade');
+      const widget = document.getElementById('live-widget');
+
+      if (score !== null) {
+        const rounded = Math.round(score * 10) / 10;
+        const g = getGrade(rounded);
+        numEl.textContent  = rounded.toFixed(1);
+        grEl.textContent   = g.grade + ' — ' + g.rec;
+        numEl.style.color  = g.color;
+        grEl.style.color   = g.color;
+        widget.style.borderColor = g.color;
+      } else {
+        numEl.textContent  = '—';
+        grEl.textContent   = '—';
+        numEl.style.color  = 'var(--text-primary)';
+        grEl.style.color   = 'var(--text-secondary)';
+        widget.style.borderColor = 'var(--accent-gold-muted)';
+      }
+    }
+
+    function updateProgress() {
+      let complete = 0;
+      SECTIONS.forEach((sec, i) => {
+        const fieldsOk = sec.fields.every(f => val(f) !== null);
+        const alumniOk = !sec.needsAlumni || (getS1AScore() !== null);
+        if (fieldsOk && alumniOk) complete++;
+      });
+      const pct = (complete / 7) * 100;
+      document.getElementById('progress-fill').style.width = pct + '%';
+      document.getElementById('progress-text').textContent = complete + ' of 7 sections complete';
+    }
+
+    function checkBadge(sectionId) {
+      const idx    = parseInt(sectionId.split('-')[1]) - 1;
+      const sec    = SECTIONS[idx];
+      const badge  = document.getElementById('badge-' + sectionId);
+      if (!sec || !badge) return;
+      const fieldsOk = sec.fields.every(f => val(f) !== null);
+      const alumniOk = !sec.needsAlumni || (getS1AScore() !== null);
+      badge.classList.toggle('visible', fieldsOk && alumniOk);
+    }
+
+    function checkSection0Badge() {
+      const nameOk    = document.getElementById('school-name').value.trim() !== '';
+      const alumniOk  = document.getElementById('total-alumni').value !== '';
+      const membersOk = document.getElementById('fb-members').value !== '';
+      document.getElementById('badge-section-0').classList.toggle('visible', nameOk && alumniOk && membersOk);
+    }
+
+    function onAnyChange() {
+      updatePenetration();
+      updateLiveScore();
+      updateProgress();
+      for (let i = 1; i <= 7; i++) checkBadge('section-' + i);
+      checkSection0Badge();
+    }
+
+    // ================================================================
+    // SECTION TOGGLE
+    // ================================================================
+    function toggleSection(id) {
+      const body   = document.getElementById('body-' + id);
+      const toggle = document.getElementById('toggle-' + id);
+      const collapsed = body.classList.toggle('collapsed');
+      toggle.classList.toggle('collapsed', collapsed);
+    }
+
+    // ================================================================
+    // FORM VALIDATION
+    // ================================================================
+    function validateForm() {
+      let ok = true;
+
+      function require(id, errId, msg) {
+        const el  = document.getElementById(id);
+        const err = document.getElementById(errId);
+        const bad = !el.value.trim() || (el.type === 'number' && parseFloat(el.value) <= 0);
+        if (bad) { err.textContent = msg; err.classList.add('visible'); ok = false; }
+        else     { err.classList.remove('visible'); }
+      }
+
+      require('school-name',  'err-school-name',  'School name is required.');
+      require('total-alumni', 'err-total-alumni',  'Required — must be greater than 0.');
+
+      // fb-members can be 0, just needs to be present
+      const fbEl  = document.getElementById('fb-members');
+      const fbErr = document.getElementById('err-fb-members');
+      if (fbEl.value === '') {
+        fbErr.classList.add('visible'); ok = false;
+      } else {
+        fbErr.classList.remove('visible');
+      }
+
+      const allSelects = ['s1b','s1c','s2a','s2b','s2c','s3a','s3b','s3c','s3d','s4a','s4b','s5a','s5b','s5c','s6a','s6b','s7a','s7b'];
+      allSelects.forEach(id => {
+        const err = document.getElementById('err-' + id);
+        if (!document.getElementById(id).value) {
+          err.classList.add('visible'); ok = false;
+        } else {
+          err.classList.remove('visible');
+        }
+      });
+
+      return ok;
+    }
+
+    // ================================================================
+    // SHOW RESULTS
+    // ================================================================
+    function showResults() {
+      const schoolName = document.getElementById('school-name').value.trim();
+      const state      = document.getElementById('school-state').value.trim();
+      const division   = document.getElementById('school-division').value.trim();
+      const fbUrl      = document.getElementById('facebook-url').value.trim();
+      const redditUrl  = document.getElementById('reddit-url').value.trim();
+      const totalAl    = parseFloat(document.getElementById('total-alumni').value) || 0;
+      const fbMembers  = parseFloat(document.getElementById('fb-members').value)   || 0;
+      const penetRate  = totalAl > 0 ? (fbMembers / totalAl) * 100 : 0;
+
+      const sectionRaws = [
+        calcSection1(),
+        calcAvg(['s2a','s2b','s2c']),
+        calcAvg(['s3a','s3b','s3c','s3d']),
+        calcAvg(['s4a','s4b']),
+        calcAvg(['s5a','s5b','s5c']),
+        calcAvg(['s6a','s6b']),
+        calcAvg(['s7a','s7b']),
+      ];
+
+      const composite = calcComposite();
+      const final     = Math.round(composite * 10) / 10;
+      const g         = getGrade(final);
+
+      // Stash for email
+      window._reportData = { schoolName, state, division, fbUrl, redditUrl, totalAl, fbMembers, penetRate, final, g, sectionRaws };
+
+      // ── Top Card ──────────────────
+      document.getElementById('result-school-name').textContent = schoolName;
+
+      const scoreEl = document.getElementById('result-score');
+      scoreEl.textContent = final.toFixed(1);
+      scoreEl.style.color = g.color;
+
+      const gradeBadge = document.getElementById('result-grade');
+      gradeBadge.textContent         = g.grade;
+      gradeBadge.style.color         = g.color;
+      gradeBadge.style.borderColor   = g.color;
+      gradeBadge.style.backgroundColor = g.bg;
+
+      const recLabel = document.getElementById('result-recommendation');
+      recLabel.textContent             = g.rec;
+      recLabel.style.color             = g.color;
+      recLabel.style.borderColor       = g.color;
+      recLabel.style.backgroundColor   = g.bg;
+
+      document.getElementById('result-penetration').textContent = penetRate.toFixed(1) + '%';
+
+      // Meta
+      const today = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+      document.getElementById('results-meta').innerHTML = `
+        <div class="results-meta-item"><span class="meta-label">State</span><span class="meta-value">${state || '—'}</span></div>
+        <div class="results-meta-item"><span class="meta-label">Division</span><span class="meta-value">${division || '—'}</span></div>
+        <div class="results-meta-item"><span class="meta-label">Facebook Group</span>${fbUrl ? `<a href="${fbUrl}" target="_blank" class="meta-link">View ↗</a>` : '<span class="meta-value">Not provided</span>'}</div>
+        <div class="results-meta-item"><span class="meta-label">Subreddit</span>${redditUrl ? `<a href="${redditUrl}" target="_blank" class="meta-link">View ↗</a>` : '<span class="meta-value">Not provided</span>'}</div>
+        <div class="results-meta-item"><span class="meta-label">Evaluated</span><span class="meta-value">${today}</span></div>
+      `;
+
+      // ── Key Strengths / Risks ──────
+      const ranked = SECTIONS.map((s, i) => ({ name: s.name, score: sectionRaws[i] ?? 0 }))
+                              .sort((a, b) => b.score - a.score);
+
+      document.getElementById('key-strengths').innerHTML = ranked.slice(0, 2).map(s =>
+        `<div class="key-stat-item"><span class="key-stat-arrow" style="color:var(--success)">↑</span><span>${s.name} — ${s.score.toFixed(1)}/5.0</span></div>`
+      ).join('');
+      document.getElementById('key-risks').innerHTML = ranked.slice(-2).reverse().map(s =>
+        `<div class="key-stat-item"><span class="key-stat-arrow" style="color:var(--danger)">↓</span><span>${s.name} — ${s.score.toFixed(1)}/5.0</span></div>`
+      ).join('');
+
+      // ── Section Breakdown Cards ────
+      const container = document.getElementById('section-results');
+      container.innerHTML = '';
+      SECTIONS.forEach((sec, i) => {
+        const raw   = sectionRaws[i];
+        if (raw === null) return;
+        const bc    = barColor(raw);
+        const bw    = ((raw - 1) / 4) * 100;
+        const interp = interpret(sec.id, raw);
+        const card = document.createElement('div');
+        card.className = 'section-result-card';
+        card.innerHTML = `
+          <div class="section-result-header">
+            <div>
+              <div class="section-result-name">${sec.name}</div>
+              <div class="section-result-weight">Weight: ${(sec.weight * 100).toFixed(0)}%</div>
+            </div>
+            <div class="section-result-score-wrap">
+              <span class="section-result-score-number" style="color:${bc}">${raw.toFixed(1)}</span>
+              <span class="section-result-score-denom"> / 5.0</span>
+            </div>
+          </div>
+          <div class="score-bar-track">
+            <div class="score-bar-fill" style="background:${bc}" data-w="${bw}"></div>
+          </div>
+          <div class="section-result-interpretation">${interp}</div>
+        `;
+        container.appendChild(card);
+      });
+
+      // ── Show panel + animate bars ──
+      const panel = document.getElementById('results-panel');
+      panel.classList.add('visible');
+
+      setTimeout(() => {
+        document.querySelectorAll('.score-bar-fill').forEach(bar => {
+          bar.style.width = bar.getAttribute('data-w') + '%';
+        });
+      }, 120);
+
+      setTimeout(() => panel.scrollIntoView({ behavior: 'smooth', block: 'start' }), 200);
+
+      // Reset email button state
+      const btn = document.getElementById('send-email-btn');
+      btn.disabled = false;
+      btn.textContent = '↗  Send Report to Email';
+      document.getElementById('email-status').textContent = '';
+      document.getElementById('email-status').className = 'email-status';
+    }
+
+    // ================================================================
+    // EMAIL SENDING
+    // ================================================================
+    function buildBreakdownText(d) {
+      const sectionLabels = [
+        'SECTION 1 — ALUMNI IDENTITY STRENGTH (25%)',
+        'SECTION 2 — MERCH FRUSTRATION INDEX (20%)',
+        'SECTION 3 — ATHLETIC EMOTIONAL RELEVANCE (20%)',
+        'SECTION 4 — ALUMNI GEOGRAPHIC CONCENTRATION (15%)',
+        'SECTION 5 — SCHOOL NARRATIVE DISTINCTIVENESS (10%)',
+        'SECTION 6 — ALUMNI ASSOCIATION ACTIVITY (5%)',
+        'SECTION 7 — MERCHANDISE DESERT SCORE (5%)',
+      ];
+      let out = '';
+      SECTIONS.forEach((sec, i) => {
+        const raw = d.sectionRaws[i];
+        const txt = raw !== null ? interpret(sec.id, raw) : 'N/A';
+        out += sectionLabels[i] + '\n';
+        out += 'Score: ' + (raw !== null ? raw.toFixed(1) : '—') + ' / 5.0\n';
+        out += txt + '\n\n';
+      });
+
+      const ranked = SECTIONS.map((s, i) => ({ name: s.name, score: d.sectionRaws[i] ?? 0 }))
+                              .sort((a, b) => b.score - a.score);
+      out += '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n';
+      out += 'KEY STRENGTHS\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n';
+      ranked.slice(0, 2).forEach(s => { out += '↑ ' + s.name + ' — ' + s.score.toFixed(1) + '/5.0\n'; });
+      out += '\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n';
+      out += 'KEY RISKS\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n';
+      ranked.slice(-2).reverse().forEach(s => { out += '↓ ' + s.name + ' — ' + s.score.toFixed(1) + '/5.0\n'; });
+
+      return out;
+    }
+
+    async function sendReport() {
+      const d = window._reportData;
+      if (!d) return;
+
+      const btn    = document.getElementById('send-email-btn');
+      const status = document.getElementById('email-status');
+      btn.disabled    = true;
+      btn.textContent = 'Sending…';
+      status.textContent = '';
+      status.className   = 'email-status';
+
+      const today = new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+
+      const params = {
+        to_email:        RECIPIENT_EMAIL,
+        school_name:     d.schoolName,
+        state:           d.state || '—',
+        division:        d.division || '—',
+        overall_score:   d.final.toFixed(1),
+        grade:           d.g.grade,
+        recommendation:  d.g.rec,
+        facebook_url:    d.fbUrl    || 'Not provided',
+        reddit_url:      d.redditUrl || 'Not provided',
+        penetration_rate: d.penetRate.toFixed(1) + '%',
+        fb_members:      d.fbMembers.toLocaleString(),
+        total_alumni:    d.totalAl.toLocaleString(),
+        date_evaluated:  today,
+        score_breakdown: buildBreakdownText(d),
+      };
+
+      try {
+        await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, params);
+        btn.textContent      = 'Report Sent ✓';
+        status.textContent   = 'Report sent to ' + RECIPIENT_EMAIL;
+        status.className     = 'email-status success';
+      } catch (err) {
+        console.error('EmailJS error:', err);
+        btn.disabled    = false;
+        btn.textContent = '↗  Send Report to Email';
+        status.textContent = 'Send failed. Check EmailJS configuration and try again.';
+        status.className   = 'email-status error';
+      }
+    }
+
+    // ================================================================
+    // FORM SUBMISSION
+    // ================================================================
+    document.getElementById('scorer-form').addEventListener('submit', function (e) {
+      e.preventDefault();
+      if (validateForm()) {
+        showResults();
+      } else {
+        const firstErr = document.querySelector('.field-error.visible');
+        if (firstErr) firstErr.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    });
+
+    // ================================================================
+    // RESET
+    // ================================================================
+    function resetForm() {
+      document.getElementById('scorer-form').reset();
+      document.getElementById('results-panel').classList.remove('visible');
+      document.querySelectorAll('.field-error').forEach(el => el.classList.remove('visible'));
+      document.querySelectorAll('.section-complete-badge').forEach(el => el.classList.remove('visible'));
+      window._reportData = null;
+      onAnyChange();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // ================================================================
+    // EVENT LISTENERS
+    // ================================================================
+
+    // All selects — live update
+    document.querySelectorAll('.custom-select').forEach(sel => {
+      sel.addEventListener('change', onAnyChange);
+    });
+
+    // Section 0 number inputs
+    document.getElementById('total-alumni').addEventListener('input', onAnyChange);
+    document.getElementById('fb-members').addEventListener('input', onAnyChange);
+    document.getElementById('school-name').addEventListener('input', onAnyChange);
+
+    // ================================================================
+    // INIT
+    // ================================================================
+    onAnyChange();
+  </script>
+</body>
+</html>
