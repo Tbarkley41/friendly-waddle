@@ -1,0 +1,123 @@
+{
+  "campaign": {
+    "name":       "BKT Growth Audit — Service Industry Lead Gen",
+    "owner":      "BKT Agency | info@bkt-agency.com",
+    "from_name":  "Tavarean @ BKT Agency",
+    "reply_to":   "info@bkt-agency.com",
+    "goal":       "BKT Growth Audit form completion + consultation booking",
+    "cta_url":    "https://bkt-agency.com/bkt-growth-audit",
+    "created":    "2026-03-30"
+  },
+  "segments": [
+    { "id": "A", "industry": "Drainage / Septic / Plumbing",      "pain": "slow lead response, no automation"         },
+    { "id": "B", "industry": "HVAC / Electrical / Roofing",       "pain": "seasonal volatility, CRM chaos"            },
+    { "id": "C", "industry": "Management / Business Consulting",   "pain": "low lead volume, close rate plateau"       },
+    { "id": "D", "industry": "Med Spa / Healthcare",               "pain": "low lead volume despite high close rate"   },
+    { "id": "E", "industry": "Legal / Professional Services",      "pain": "brand awareness gap, no local SEO"         }
+  ],
+  "sequence": [
+    {
+      "email_id":     1,
+      "send_day":     0,
+      "goal":         "Open + click to audit form",
+      "subject_a":    "Your {{city}} competitors are responding to leads in 4 minutes. You?",
+      "subject_b":    "The revenue hole most {{industry}} owners don't see",
+      "subject_c":    "I looked at your business. Here's what I found.",
+      "preview_text": "This one metric is quietly killing your close rate.",
+      "cta_text":     "Start My Free BKT Growth Audit",
+      "cta_url":      "https://bkt-agency.com/bkt-growth-audit",
+      "kpi_targets":  { "open_rate": 0.35, "click_rate": 0.055 }
+    },
+    {
+      "email_id":     2,
+      "send_day":     2,
+      "goal":         "Build credibility via case study",
+      "subject_a":    "From $85k to $131k/mo in 90 days (service business, Florida)",
+      "subject_b":    "What happened when we ran the audit on a drainage company",
+      "subject_c":    "Real numbers from a Central Florida service business",
+      "preview_text": "60 leads became 81. 25% close rate became 30%. Here's how.",
+      "cta_text":     "Get Your Free BKT Growth Audit",
+      "cta_url":      "https://bkt-agency.com/bkt-growth-audit",
+      "kpi_targets":  { "open_rate": 0.30, "click_rate": 0.045 },
+      "case_study": {
+        "client":            "Drainage Solutions, Inc. (Central Florida)",
+        "baseline_revenue":  85000,
+        "result_revenue":    131750,
+        "baseline_leads":    60,
+        "result_leads":      81,
+        "baseline_close":    25,
+        "result_close":      30,
+        "timeframe_days":    90,
+        "revenue_lift_pct":  55
+      }
+    },
+    {
+      "email_id":     3,
+      "send_day":     4,
+      "goal":         "Educate on mechanism, remove complexity objection",
+      "subject_a":    "Here's exactly what happens when you submit the audit form",
+      "subject_b":    "The 10-agent system behind your growth plan",
+      "subject_c":    "How BKT builds your 90-day roadmap (step by step)",
+      "preview_text": "No fluff. No sales call required to get your results.",
+      "cta_text":     "Complete the 6-Question Audit Form",
+      "cta_url":      "https://bkt-agency.com/bkt-growth-audit",
+      "kpi_targets":  { "open_rate": 0.28, "click_rate": 0.040 },
+      "agents_referenced": [1, 2, 3, 4, 5, 6, 7, 9]
+    },
+    {
+      "email_id":     4,
+      "send_day":     7,
+      "goal":         "Drive urgency via capacity constraint",
+      "subject_a":    "We cap new audits at 12/month. 4 spots left for {{month}}.",
+      "subject_b":    "Closing {{month}} audit spots Friday",
+      "subject_c":    "{{first_name}}, I'm holding a spot for you until Friday",
+      "preview_text": "We manually review every audit. That limits how many we can take.",
+      "cta_text":     "Claim One of the 4 Remaining Spots",
+      "cta_url":      "https://bkt-agency.com/bkt-growth-audit",
+      "kpi_targets":  { "open_rate": 0.32, "click_rate": 0.050 },
+      "monthly_cap":  12
+    },
+    {
+      "email_id":     5,
+      "send_day":     10,
+      "goal":         "Final conversion — soft close + direct reply option",
+      "subject_a":    "Last email about this, {{first_name}}",
+      "subject_b":    "Closing the loop on your growth audit",
+      "subject_c":    "Still here if you want it",
+      "preview_text": "No pressure — just want to make sure this was useful.",
+      "cta_text":     "BKT Growth Audit",
+      "cta_url":      "https://bkt-agency.com/bkt-growth-audit",
+      "kpi_targets":  { "open_rate": 0.25, "click_rate": 0.030 },
+      "post_sequence": "suppress — move to low-frequency monthly newsletter list"
+    }
+  ],
+  "conversion_events": {
+    "audit_form_submitted": {
+      "trigger":  "Form submission on /bkt-growth-audit",
+      "actions":  [
+        "Stop drip sequence",
+        "Tag contact: audit-submitted in HubSpot",
+        "Send confirmation email within 5 min",
+        "Slack alert to Tavarean",
+        "Create HubSpot deal: stage = Audit Received"
+      ]
+    },
+    "consultation_booked": {
+      "trigger":  "Calendly booking",
+      "actions":  [
+        "Stop all sequences",
+        "Tag: consultation-booked",
+        "Create HubSpot deal: stage = Consultation Booked",
+        "Slack alert",
+        "Start onboarding sequence"
+      ]
+    }
+  },
+  "kpi_targets_overall": {
+    "open_rate":               "> 32%",
+    "click_rate":              "> 4.5%",
+    "audit_form_completion":   "> 18% of clicks",
+    "consultation_booking":    "> 30% of form completions",
+    "unsubscribe_rate":        "< 0.4%"
+  }
+}

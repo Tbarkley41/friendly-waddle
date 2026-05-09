@@ -1,0 +1,14 @@
+{
+  "BusinessName": "Pinnacle Growth Partners",
+  "PrimaryBottleneck": "No Critical Bottleneck Detected",
+  "ImpactSeverity": "Low",
+  "RootCauseInference": "Core metrics are healthy. EfficiencyScore (67) and VolumeScore (65) are both above the critical threshold of 50. StabilityScore (82) is strong. Optimization focus should shift to scaling and automation deployment.",
+  "PivotStrategy": "Proceed with full automation pipeline deployment (Agent #5+). Focus on scaling lead volume to capture growth headroom. Invest in SEO and content strategy to compound inbound traffic.",
+  "SecondaryBottlenecks": [],
+  "ScoreSnapshot": {
+    "EfficiencyScore": 67,
+    "VolumeScore": 65,
+    "StabilityScore": 82,
+    "OverallScore": 71
+  }
+}

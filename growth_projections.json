@@ -1,0 +1,44 @@
+{
+  "BusinessName": "Drainage Solutions, Inc.",
+  "URL": "https://drainagesolutionsfl.com/",
+  "GeneratedDate": "2026-03-29",
+  "BaselineSnapshot": {
+    "MonthlyRevenue": 85000,
+    "LeadCount": 60,
+    "CloseRate": 25,
+    "AvgDealSize": 5666.67
+  },
+  "GrowthDrivers": {
+    "TotalLeadLift": 35,
+    "TotalCloseRateLift": 20,
+    "TotalTrafficLift": 30,
+    "CMGR": 0.157295,
+    "LeadCMGR": 0.105209,
+    "Sources": {
+      "SEO_Sprint_LeadLift":       "Emergency landing page + stormwater pillar + city pages → +35% leads by Day90",
+      "Zapier_CloseRateLift":      "<5-min lead response automation → +20% close rate improvement (25%→30%)",
+      "SEO_TrafficLift":           "Technical fixes + new pages + backlinks → +30% organic traffic"
+    }
+  },
+  "Projections": {
+    "Day30": {
+      "Confidence": "High Confidence",
+      "Conservative": { "Revenue": 93022,  "Leads": 63.8, "CloseRate": 26.0  },
+      "Base":         { "Revenue": 98370,  "Leads": 66.3, "CloseRate": 26.67 },
+      "Optimistic":   { "Revenue": 103718, "Leads": 68.8, "CloseRate": 27.33 }
+    },
+    "Day60": {
+      "Confidence": "High Confidence",
+      "Conservative": { "Revenue": 101801, "Leads": 67.8, "CloseRate": 27.0  },
+      "Base":         { "Revenue": 113843, "Leads": 73.3, "CloseRate": 28.33 },
+      "Optimistic":   { "Revenue": 126558, "Leads": 79.0, "CloseRate": 29.67 }
+    },
+    "Day90": {
+      "Confidence": "Medium Confidence",
+      "Conservative": { "Revenue": 111409, "Leads": 72.1, "CloseRate": 28.0  },
+      "Base":         { "Revenue": 131750, "Leads": 81.0, "CloseRate": 30.0  },
+      "Optimistic":   { "Revenue": 154428, "Leads": 90.6, "CloseRate": 32.0  }
+    }
+  },
+  "ProjectionDisclaimer": "Forecasts are model-based estimates. Validate against actuals at each horizon."
+}

@@ -1,0 +1,94 @@
+{
+  "meta": {
+    "OwnerAgent":    "Agent #9 — SEO Management",
+    "LastUpdated":   "2026-03-29",
+    "Schema":        "v1.0"
+  },
+  "ActiveCampaigns": [
+    {
+      "CampaignID":       "CAMP-001",
+      "CampaignName":     "Brand Awareness — Management Consulting Q2 2026",
+      "OwnerAgent":       "Agent #9",
+      "Status":           "Active",
+      "StartDate":        "2026-04-01",
+      "ReviewDate":       "2026-04-30",
+      "PriorityMode":     "Brand Awareness",
+      "TargetKeywords": [
+        "management consulting Orlando",
+        "business growth consultant Florida",
+        "operational efficiency consulting SMB",
+        "fractional COO services Orlando",
+        "strategic planning consultant 2026"
+      ],
+      "TargetPages": [
+        { "URL": "/services/executive-coaching",        "PrimaryKeyword": "executive coaching Orlando",             "TargetPosition": 5  },
+        { "URL": "/services/operational-efficiency",    "PrimaryKeyword": "operational efficiency consulting SMB",  "TargetPosition": 5  },
+        { "URL": "/services/strategic-planning",        "PrimaryKeyword": "strategic planning consultant Florida",  "TargetPosition": 8  },
+        { "URL": "/case-studies",                       "PrimaryKeyword": "consulting results case study",          "TargetPosition": 10 }
+      ],
+      "LinkedZapierWorkflows": [
+        "Lead Nurture Sequence (HubSpot + Gmail + Calendly)",
+        "Retention Alert System (HubSpot + Slack + Sheets)"
+      ],
+      "KPITargets": {
+        "OrganicTrafficLift":  "+25% in 30 days",
+        "LeadCountTarget":     35,
+        "CloseRateTarget":     44.17,
+        "BacklinksTarget":     5
+      },
+      "Milestones": [
+        { "Day": 7,   "Target": "Publish 1 thought leadership article + GBP update" },
+        { "Day": 14,  "Target": "Complete internal link audit; 3 directories cited" },
+        { "Day": 21,  "Target": "Guest post pitch sent to 3 domains; schema live on 2 pages" },
+        { "Day": 30,  "Target": "GSC impressions up 10%; Day30 projection reviewed vs actual" }
+      ]
+    },
+    {
+      "CampaignID":       "CAMP-002",
+      "CampaignName":     "Lead Generation — LinkedIn + Facebook Inbound Q2 2026",
+      "OwnerAgent":       "Agent #9",
+      "Status":           "Staged",
+      "StartDate":        "2026-04-15",
+      "ReviewDate":       "2026-05-15",
+      "PriorityMode":     "Lead Generation",
+      "TargetKeywords": [
+        "hire business consultant Orlando",
+        "small business consulting services near me",
+        "growth strategy consultant Florida",
+        "business audit consultant",
+        "best management consultants Orlando 2026"
+      ],
+      "TargetPages": [
+        { "URL": "/free-consultation",   "PrimaryKeyword": "free business consultation Orlando",  "TargetPosition": 3  },
+        { "URL": "/growth-assessment",   "PrimaryKeyword": "business growth assessment Florida",  "TargetPosition": 5  }
+      ],
+      "LinkedZapierWorkflows": [
+        "Ad-to-Sheet Lead Capture (Facebook Lead Ads + Google Sheets + HubSpot)",
+        "Form-to-CRM Intake Automation (Typeform + HubSpot + Gmail)"
+      ],
+      "SyncTrigger": "Activate when Facebook Lead Ads zap goes live",
+      "KPITargets": {
+        "OrganicTrafficLift":  "+20% in 30 days",
+        "LeadCountTarget":     45,
+        "LandingPageCVR":      "15%",
+        "AdLandingPageLCP":    "< 2.5s"
+      },
+      "Milestones": [
+        { "Day": 7,   "Target": "Ad landing pages keyword-optimized; LCP < 2.5s verified" },
+        { "Day": 14,  "Target": "Facebook Lead zap live; Typeform form-to-CRM active" },
+        { "Day": 30,  "Target": "Lead count at or above 45/month; CVR >= 15%" }
+      ]
+    }
+  ],
+  "CompletedCampaigns": [],
+  "BacklogCampaigns": [
+    {
+      "CampaignID":    "CAMP-003",
+      "CampaignName":  "Retention & Authority — Testimonial + Review Push",
+      "Status":        "Backlog",
+      "ScheduledStart": "2026-05-01",
+      "PriorityMode":  "Retention & Authority",
+      "Notes":         "Activate if Agent #4 flags Revenue Volatility in Month 2 audit."
+    }
+  ]
+}

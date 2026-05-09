@@ -1,0 +1,174 @@
+{
+  "seo_strategies": {
+    "Management Consulting": {
+      "Lead Generation": [
+        {
+          "TaskName": "Target Long-Tail Buyer Keywords",
+          "Action": "Use Ahrefs or Ubersuggest to find 5 long-tail keywords with intent signals (e.g., 'hire management consultant Orlando'). Add to title tags and H1s on service pages.",
+          "Tool": "Ahrefs / Ubersuggest / Surfer SEO",
+          "TimeEstimate": "25 min",
+          "EstimatedImpact": "+20% organic lead traffic in 60 days",
+          "Tags": ["Lead Generation", "Keyword Optimization"]
+        },
+        {
+          "TaskName": "Guest Post Backlink Outreach",
+          "Action": "Identify 3 business or entrepreneurship blogs with DA > 40 using Ahrefs. Send a personalized pitch offering a guest article on operational efficiency or leadership.",
+          "Tool": "Ahrefs / Hunter.io / Gmail",
+          "TimeEstimate": "30 min",
+          "EstimatedImpact": "+15% domain authority in 90 days",
+          "Tags": ["Lead Generation", "Backlink Outreach"]
+        },
+        {
+          "TaskName": "Optimize Google Business Profile",
+          "Action": "Update GBP with primary keyword in business description, add 3 new service photos, and post a 150-word update linking to a recent case study or blog.",
+          "Tool": "Google Business Profile / Canva",
+          "TimeEstimate": "20 min",
+          "EstimatedImpact": "+18% local search impressions in 30 days",
+          "Tags": ["Lead Generation", "Local SEO"]
+        },
+        {
+          "TaskName": "Publish SEO-Optimized Case Study",
+          "Action": "Write a 600-word case study targeting the keyword '[Industry] consulting results [City]'. Structure with Problem → Solution → Outcome. Publish to blog and share on LinkedIn.",
+          "Tool": "Surfer SEO / WordPress / LinkedIn",
+          "TimeEstimate": "45 min",
+          "EstimatedImpact": "+12% referral traffic in 45 days",
+          "Tags": ["Lead Generation", "Content Strategy"]
+        }
+      ],
+      "Brand Awareness": [
+        {
+          "TaskName": "Publish Thought Leadership Article",
+          "Action": "Write or repurpose a 500-word LinkedIn article on a trend in your industry (e.g., 'Why SMBs Are Failing at Operational Efficiency in 2026'). Include 2 internal links.",
+          "Tool": "LinkedIn / Grammarly / ChatGPT",
+          "TimeEstimate": "30 min",
+          "EstimatedImpact": "+25% LinkedIn profile views in 30 days",
+          "Tags": ["Brand Awareness", "Content Strategy", "Thought Leadership"]
+        },
+        {
+          "TaskName": "Build Local Citation Listings",
+          "Action": "Submit or verify NAP (Name, Address, Phone) consistency on 5 local directories: Yelp, Clutch, Expertise.com, Bark.com, and local Chamber of Commerce site.",
+          "Tool": "BrightLocal / Moz Local",
+          "TimeEstimate": "20 min",
+          "EstimatedImpact": "+10% local SEO ranking signals in 45 days",
+          "Tags": ["Brand Awareness", "Local SEO"]
+        },
+        {
+          "TaskName": "Request & Respond to Google Reviews",
+          "Action": "Send a review request email to 5 past clients using a templated ask. Respond publicly to all existing reviews (positive and negative) within 24 hours.",
+          "Tool": "Gmail / Google Business Profile",
+          "TimeEstimate": "15 min",
+          "EstimatedImpact": "+8% click-through rate from Google Maps in 30 days",
+          "Tags": ["Brand Awareness", "Local SEO", "Review Generation"]
+        },
+        {
+          "TaskName": "Internal Linking Audit",
+          "Action": "Review top 5 service/landing pages. Add 2 internal links per page pointing to blog posts or case studies. Use keyword-rich anchor text aligned to target queries.",
+          "Tool": "Screaming Frog / Google Search Console",
+          "TimeEstimate": "25 min",
+          "EstimatedImpact": "+10% page authority distribution in 30 days",
+          "Tags": ["Brand Awareness", "Content Strategy"]
+        }
+      ],
+      "Retention & Authority": [
+        {
+          "TaskName": "Publish Client Success Story",
+          "Action": "Interview or compile results from a current retainer client. Publish a 400-word success story with metrics. Tag the client on LinkedIn and request a share.",
+          "Tool": "WordPress / LinkedIn / Canva",
+          "TimeEstimate": "35 min",
+          "EstimatedImpact": "+15% referral trust signals in 60 days",
+          "Tags": ["Retention & Authority", "Thought Leadership"]
+        },
+        {
+          "TaskName": "Schema Markup Implementation",
+          "Action": "Add LocalBusiness and Service schema markup to homepage and top 2 service pages using Google's Structured Data Markup Helper. Validate with Rich Results Test.",
+          "Tool": "Google Structured Data Markup Helper / Yoast SEO",
+          "TimeEstimate": "30 min",
+          "EstimatedImpact": "+12% rich result eligibility in 45 days",
+          "Tags": ["Retention & Authority", "Technical SEO"]
+        },
+        {
+          "TaskName": "Newsletter SEO Repurpose",
+          "Action": "Take the last client newsletter or update and repurpose as a 350-word blog post. Optimize for one target keyword. Submit URL to Google Search Console for indexing.",
+          "Tool": "Google Search Console / Yoast / Mailchimp",
+          "TimeEstimate": "20 min",
+          "EstimatedImpact": "+8% indexed content velocity in 30 days",
+          "Tags": ["Retention & Authority", "Content Strategy"]
+        }
+      ]
+    },
+    "SaaS / Tech": {
+      "Lead Generation": [
+        {
+          "TaskName": "Optimize Product Landing Page for Intent Keywords",
+          "Action": "Run landing page through Surfer SEO. Add 3 high-intent keywords (e.g., '[Product] alternative', 'best [category] software 2026') to H1, meta, and first paragraph.",
+          "Tool": "Surfer SEO / SEMrush",
+          "TimeEstimate": "20 min",
+          "EstimatedImpact": "+22% organic trial signups in 60 days",
+          "Tags": ["Lead Generation", "Keyword Optimization"]
+        },
+        {
+          "TaskName": "Submit to SaaS Directories",
+          "Action": "List or update product on G2, Capterra, and Product Hunt. Ensure description uses top 3 target keywords. Request 3 reviews from current users.",
+          "Tool": "G2 / Capterra / Product Hunt",
+          "TimeEstimate": "25 min",
+          "EstimatedImpact": "+18% referral traffic in 45 days",
+          "Tags": ["Lead Generation", "Backlink Outreach"]
+        }
+      ],
+      "Brand Awareness": [
+        {
+          "TaskName": "Developer Community Content Drop",
+          "Action": "Post a technical tip, tutorial snippet, or tool comparison to Dev.to, Hashnode, or a relevant Reddit community. Include a non-promotional mention of your product.",
+          "Tool": "Dev.to / Hashnode / Reddit",
+          "TimeEstimate": "25 min",
+          "EstimatedImpact": "+15% community-driven traffic in 30 days",
+          "Tags": ["Brand Awareness", "Content Strategy"]
+        }
+      ]
+    },
+    "Real Estate": {
+      "Lead Generation": [
+        {
+          "TaskName": "Neighborhood Keyword Page Creation",
+          "Action": "Create or update a location-specific landing page targeting '[City] [Property Type] for sale/rent'. Include local stats, a map embed, and 3 internal links.",
+          "Tool": "WordPress / Google My Business / SEMrush",
+          "TimeEstimate": "40 min",
+          "EstimatedImpact": "+25% local organic leads in 60 days",
+          "Tags": ["Lead Generation", "Local SEO"]
+        }
+      ],
+      "Brand Awareness": [
+        {
+          "TaskName": "Video Walkthrough SEO",
+          "Action": "Upload a property or market update video to YouTube. Optimize title, description, and tags with target keywords. Embed on relevant blog or listing page.",
+          "Tool": "YouTube Studio / TubeBuddy",
+          "TimeEstimate": "20 min",
+          "EstimatedImpact": "+15% video search visibility in 45 days",
+          "Tags": ["Brand Awareness", "Content Strategy"]
+        }
+      ]
+    },
+    "Default": {
+      "Lead Generation": [
+        {
+          "TaskName": "Keyword Gap Analysis",
+          "Action": "Run a keyword gap report vs. top 2 competitors using SEMrush or Ubersuggest. Identify 5 easy-win keywords (KD < 30, volume > 100). Add to content calendar.",
+          "Tool": "SEMrush / Ubersuggest",
+          "TimeEstimate": "25 min",
+          "EstimatedImpact": "+15% organic visibility in 60 days",
+          "Tags": ["Lead Generation", "Keyword Optimization"]
+        }
+      ],
+      "Brand Awareness": [
+        {
+          "TaskName": "Google Search Console Optimization",
+          "Action": "Open GSC Performance report. Find 5 queries ranking positions 8-15. Update the corresponding page title, meta description, and H2 to better match the query.",
+          "Tool": "Google Search Console",
+          "TimeEstimate": "20 min",
+          "EstimatedImpact": "+10% click-through rate in 30 days",
+          "Tags": ["Brand Awareness", "Keyword Optimization"]
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,44 @@
+{
+  "BusinessName": "Pinnacle Growth Partners",
+  "BaselineSnapshot": {
+    "MonthlyRevenue": 42000,
+    "LeadCount": 33,
+    "CloseRate": 40
+  },
+  "ProjectionTargets": {
+    "Day30":  { "Revenue": 45770.44, "Leads": 35.01, "CloseRate": 44.17 },
+    "Day90":  { "Revenue": 54357.15, "Leads": 39.39, "CloseRate": 52.5  },
+    "Day180": { "Revenue": 70350.0,  "Leads": 47.02, "CloseRate": 65.0  }
+  },
+  "DailyPulse": {
+    "Metrics": [
+      { "Name": "NewLeadsToday",       "Target": 1.6,  "Source": "HubSpot CRM"       },
+      { "Name": "SEOTasksCompleted",   "Target": 3,    "Source": "Manual / Buffer"    },
+      { "Name": "ZapierTriggersRun",   "Target": 5,    "Source": "Zapier Task History"},
+      { "Name": "OutboundTouchCount",  "Target": 5,    "Source": "CRM Activity Log"   },
+      { "Name": "ContentPublished",    "Target": 1,    "Source": "CMS / LinkedIn"     }
+    ],
+    "AlertConfig": "alert_thresholds.json#daily"
+  },
+  "WeeklyReview": {
+    "Metrics": [
+      { "Name": "WeeklyLeadCount",          "Target": 8.75,  "DeltaSource": "Day30.Base.Leads / 4"              },
+      { "Name": "WeeklyCloseRate",          "Target": 44.17, "DeltaSource": "Day30.Base.CloseRate"              },
+      { "Name": "AverageDealSize",          "Target": 3181,  "DeltaSource": "MonthlyRevenue / (Leads*CloseRate)"},
+      { "Name": "ProposalsSent",            "Target": 5,     "DeltaSource": "CRM pipeline stage count"          },
+      { "Name": "FollowUpCompletionRate",   "Target": 90,    "DeltaSource": "CRM task completion %"             }
+    ],
+    "AlertConfig": "alert_thresholds.json#weekly"
+  },
+  "MonthlyAudit": {
+    "Metrics": [
+      { "Name": "ActualMonthlyRevenue",  "ProjectedValue": 45770.44, "VarianceFormula": "((Actual - 45770.44) / 45770.44) * 100" },
+      { "Name": "ActualLeadCount",       "ProjectedValue": 35,       "VarianceFormula": "((Actual - 35) / 35) * 100"             },
+      { "Name": "ActualCloseRate",       "ProjectedValue": 44.17,    "VarianceFormula": "Actual - 44.17"                         },
+      { "Name": "ForecastAccuracyScore", "ProjectedValue": 85,       "VarianceFormula": "100 - abs(RevenueVariance%)"            },
+      { "Name": "RevenueVariance",       "ProjectedValue": 0,        "VarianceFormula": "((Actual - Projected) / Projected)*100" }
+    ],
+    "AlertConfig": "alert_thresholds.json#monthly"
+  },
+  "AlertThresholdRef": "alert_thresholds.json"
+}

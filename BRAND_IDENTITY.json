@@ -1,0 +1,76 @@
+{
+  "meta": {
+    "version":     "1.0",
+    "created":     "2026-03-29",
+    "owner_agent": "Bob the Builder — BKT Consulting Agent Suite v1.0"
+  },
+  "brand": {
+    "legal_name":  "BKT Consulting",
+    "dba":         "BKT Agency",
+    "tagline":     "Build. Scale. Automate.",
+    "location": {
+      "city":      "Orlando",
+      "state":     "FL",
+      "country":   "US",
+      "region":    "Central Florida"
+    }
+  },
+  "digital_presence": {
+    "primary_url":   "https://bkt-agency.com",
+    "contact_email": "info@bkt-agency.com",
+    "phone":         null,
+    "socials": {
+      "facebook":    "https://www.facebook.com/BarkentineDesignCo",
+      "instagram":   "https://www.instagram.com/BarkentineDesignCo",
+      "linkedin":    null,
+      "twitter_x":   null
+    },
+    "social_handle": "Barkentine Design Co"
+  },
+  "style_guide": {
+    "aesthetic":    "Modern / Dark / Tech",
+    "style_ref":    "Xcency",
+    "palette": {
+      "primary":     "#0A0A0F",
+      "secondary":   "#1A1A2E",
+      "accent":      "#00D4FF",
+      "accent_alt":  "#7B2FBE",
+      "text_primary": "#F0F0F0",
+      "text_muted":  "#888899"
+    },
+    "typography": {
+      "heading":     "Space Grotesk",
+      "body":        "Inter",
+      "mono":        "JetBrains Mono"
+    },
+    "ui_principles": [
+      "Dark background with high-contrast neon accents",
+      "Glassmorphism cards with subtle border glow",
+      "Minimal navigation — single CTA above fold",
+      "Animated gradient hero section",
+      "Mobile-first, sub-2s LCP target"
+    ]
+  },
+  "schema_org": {
+    "@context":      "https://schema.org",
+    "@type":         "ProfessionalService",
+    "name":          "BKT Consulting",
+    "alternateName": "BKT Agency",
+    "url":           "https://bkt-agency.com",
+    "email":         "info@bkt-agency.com",
+    "address": {
+      "@type":           "PostalAddress",
+      "addressLocality": "Orlando",
+      "addressRegion":   "FL",
+      "addressCountry":  "US"
+    },
+    "sameAs": [
+      "https://www.facebook.com/BarkentineDesignCo",
+      "https://www.instagram.com/BarkentineDesignCo"
+    ],
+    "description": "BKT Consulting (d/b/a BKT Agency) is an Orlando-based AI automation and growth consulting firm deploying custom agent suites for SMB operations, SEO, and revenue scaling."
+  },
+  "differentiation": {
+    "note": "BKT Consulting (Orlando, FL, US) is a distinct legal and operational entity from any Mexico-based entity sharing similar naming. See SEO_CLEANUP.md for local SEO disambiguation strategy."
+  }
+}

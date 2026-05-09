@@ -1,0 +1,131 @@
+{
+  "BusinessName": "Drainage Solutions, Inc.",
+  "Industry": "Drainage / Septic Services",
+  "URL": "https://drainagesolutionsfl.com/",
+  "PriorityMode": "Lead Generation",
+  "GeneratedDate": "2026-03-29",
+  "SprintDuration": "90 days",
+  "PrimaryTargetKeywords": [
+    "Emergency Septic Repair Orlando",
+    "Stormwater Management FL"
+  ],
+  "SecondaryTargetKeywords": [
+    "Septic Tank Installation Orlando",
+    "French Drain Installation Central Florida",
+    "Lift Station Repair Orlando FL",
+    "Drain Field Replacement Orlando",
+    "Stormwater Drainage Solutions Florida",
+    "Septic System Inspection Orange County FL"
+  ],
+  "Sprint": {
+    "Phase1_Days1_30": {
+      "Label": "Foundation & Quick Wins",
+      "Goals": "Index target keywords, fix technical gaps, capture existing emergency demand",
+      "Tasks": [
+        {
+          "Rank": 1,
+          "TaskName": "Emergency Septic Repair Landing Page",
+          "Action": "Create /emergency-septic-repair-orlando. Title tag: 'Emergency Septic Repair Orlando | Same-Day Response — Drainage Solutions Inc'. H1: 'Emergency Septic Repair in Orlando, FL'. Include: symptom checklist, click-to-call CTA above fold, LocalBusiness + Service JSON-LD schema, 'Same Day Service Available' trust badge. Internal links to /septic-systems and /septic-tank-cleaning-pumping-2.",
+          "Tool": "WordPress / Yoast SEO / Schema Pro",
+          "TimeEstimate": "3 hrs",
+          "EstimatedImpact": "+35% impressions for emergency intent keywords in 30 days",
+          "PriorityMode": "Lead Generation",
+          "CampaignTag": "CAMP-DSI-001"
+        },
+        {
+          "Rank": 2,
+          "TaskName": "Google Business Profile Emergency Service Push",
+          "Action": "Add 'Emergency Septic Repair' as primary GBP service. Post 150-word update with keyword: 'Need emergency septic repair in Orlando? Call (407) 282-0881 — we respond fast.' Upload 5 geo-tagged job photos (filename: septic-repair-orlando-fl.jpg). Fix broken phone href (currently 'tel:\\(07282-0881)' — correct to 'tel:4072820881').",
+          "Tool": "Google Business Profile / Canva",
+          "TimeEstimate": "45 min",
+          "EstimatedImpact": "+20% Google Maps visibility for 'septic repair near me' in 30 days",
+          "PriorityMode": "Lead Generation",
+          "CampaignTag": "CAMP-DSI-001"
+        },
+        {
+          "Rank": 3,
+          "TaskName": "Technical SEO Audit & Critical Fixes",
+          "Action": "Run Screaming Frog. Priority: (1) Add meta descriptions to all 8+ service pages — all currently missing. (2) Compress hero image IMG_9476 (1024x768 unoptimized — target <150KB WebP). (3) Add keyword alt text to all 20+ service images. (4) Fix canonical tags. (5) Submit updated sitemap.xml to GSC.",
+          "Tool": "Screaming Frog / Yoast / Google Search Console",
+          "TimeEstimate": "2 hrs",
+          "EstimatedImpact": "+15% crawl efficiency; Core Web Vitals improvement in 30 days",
+          "PriorityMode": "Lead Generation",
+          "CampaignTag": "CAMP-DSI-001"
+        }
+      ]
+    },
+    "Phase2_Days31_60": {
+      "Label": "Authority & Content Build",
+      "Goals": "Build topical authority for stormwater, earn backlinks, expand keyword footprint to Lift Stations",
+      "Tasks": [
+        {
+          "Rank": 1,
+          "TaskName": "Stormwater Management FL Pillar Page",
+          "Action": "Publish 1,000-word pillar page at /stormwater-management-florida. Target: 'Stormwater Management FL', 'Storm Drainage Orlando', 'French Drain Installation Central Florida'. Sections: What Is Stormwater Management / Florida Code Requirements / Our Services / Service Area Map / FAQ (5 Qs with FAQ schema). Internal link to /storm-drainage and /french-drains-culverts.",
+          "Tool": "WordPress / Surfer SEO / Schema Pro",
+          "TimeEstimate": "4 hrs",
+          "EstimatedImpact": "+28% organic impressions for stormwater terms in 60 days",
+          "PriorityMode": "Lead Generation",
+          "CampaignTag": "CAMP-DSI-002"
+        },
+        {
+          "Rank": 2,
+          "TaskName": "Lift Station Page Expansion",
+          "Action": "Rewrite /lift-station (currently thin). Expand to 600+ words. Target: 'Lift Station Repair Orlando FL', 'Lift Station Installation Central Florida'. Add: process steps, price range, FAQ schema, click-to-call CTA, before/after photos with alt text. Add internal links from homepage and /septic-systems.",
+          "Tool": "WordPress / Yoast / Surfer SEO",
+          "TimeEstimate": "2 hrs",
+          "EstimatedImpact": "+22% organic traffic to /lift-station in 60 days",
+          "PriorityMode": "Lead Generation",
+          "CampaignTag": "CAMP-DSI-002"
+        },
+        {
+          "Rank": 3,
+          "TaskName": "Local Backlink Outreach — Orlando Contractor Network",
+          "Action": "Identify 5 Orlando-area real estate, HOA, and home improvement sites with DA > 30 (Ahrefs). Pitch guest article: 'Signs Your Orlando Home Needs a Septic Inspection Before Selling'. Target 1 dofollow link to /septic-systems per placement.",
+          "Tool": "Ahrefs / Hunter.io / Gmail",
+          "TimeEstimate": "2 hrs",
+          "EstimatedImpact": "+potential 12 DA points; +20% referral traffic in 60 days",
+          "PriorityMode": "Lead Generation",
+          "CampaignTag": "CAMP-DSI-002"
+        }
+      ]
+    },
+    "Phase3_Days61_90": {
+      "Label": "Scale & Convert",
+      "Goals": "Convert traffic gains to measurable leads; dominate Orlando local pack",
+      "Tasks": [
+        {
+          "Rank": 1,
+          "TaskName": "Review Generation Campaign",
+          "Action": "SMS all customers from last 90 days via Podium/Twilio. Template: 'Hi [Name], thanks for choosing Drainage Solutions! Could you leave us a quick Google review? 30 seconds: [link]'. Target: 15 new reviews in 30 days. Publicly respond to all existing reviews.",
+          "Tool": "Podium / Twilio / Google Business Profile",
+          "TimeEstimate": "1 hr setup + automated",
+          "EstimatedImpact": "+18% CTR from Google Maps local pack in 90 days",
+          "PriorityMode": "Lead Generation",
+          "CampaignTag": "CAMP-DSI-003"
+        },
+        {
+          "Rank": 2,
+          "TaskName": "City-Level Service Landing Pages",
+          "Action": "Create 3 location pages: /septic-repair-kissimmee, /septic-repair-sanford, /french-drain-winter-park. Each 500 words, unique content, LocalBusiness schema with city-specific addressLocality. Link from homepage service area section. Submit all three to GSC immediately.",
+          "Tool": "WordPress / Yoast / GSC",
+          "TimeEstimate": "5 hrs total",
+          "EstimatedImpact": "+30% impressions across surrounding service areas in 90 days",
+          "PriorityMode": "Lead Generation",
+          "CampaignTag": "CAMP-DSI-003"
+        },
+        {
+          "Rank": 3,
+          "TaskName": "GSC Position-8-to-3 Optimization Push",
+          "Action": "Pull GSC Performance report. Identify all queries ranking positions 5–15 with > 50 monthly impressions. Update title tags, H2s, and meta descriptions to better match query intent. Re-submit all modified pages in GSC for re-crawl.",
+          "Tool": "Google Search Console / WordPress",
+          "TimeEstimate": "2 hrs",
+          "EstimatedImpact": "+25% CTR on mid-ranking pages in 90 days",
+          "PriorityMode": "Lead Generation",
+          "CampaignTag": "CAMP-DSI-003"
+        }
+      ]
+    }
+  },
+  "WeeklyGoal": "Drive measurable inbound leads from organic search for 'Emergency Septic Repair Orlando' and 'Stormwater Management FL' — targeting page-1 Google rankings for both primary terms within 90 days."
+}
