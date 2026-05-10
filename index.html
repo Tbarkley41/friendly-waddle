@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>[TBD] School Predictability Scorer</title>
+  <title>School Predictability Scorer</title>
 
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -12,6 +12,9 @@
 
   <!-- EmailJS SDK -->
   <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+
+  <!-- SheetJS (Excel read/write) -->
+  <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
 
   <style>
     /* ─── CSS Variables ─────────────────────────────────────────── */
@@ -663,6 +666,189 @@
       .live-score-widget { bottom: 12px; right: 12px; padding: 10px 14px; min-width: 90px; }
       .live-score-number { font-size: 20px; }
     }
+
+    /* ─── Bulk Evaluation Section ───────────────────────────────── */
+    .bulk-section { margin-bottom: 48px; }
+    .bulk-section-eyebrow {
+      font-size: 10px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--accent-gold);
+      margin-bottom: 6px;
+    }
+    .bulk-section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(22px, 3.5vw, 30px);
+      font-weight: 700;
+      margin-bottom: 20px;
+    }
+    .bulk-card {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      overflow: hidden;
+      margin-bottom: 16px;
+    }
+    .bulk-card-header {
+      padding: 18px 24px;
+      border-bottom: 1px solid var(--border);
+    }
+    .bulk-card-body { padding: 24px; }
+    .bulk-upload-zone {
+      border: 2px dashed var(--border);
+      border-radius: 4px;
+      padding: 28px 20px;
+      text-align: center;
+      cursor: pointer;
+      transition: border-color 0.2s, background 0.2s;
+      margin-bottom: 16px;
+    }
+    .bulk-upload-zone:hover,
+    .bulk-upload-zone.drag-over {
+      border-color: var(--accent-gold);
+      background: rgba(201, 168, 76, 0.04);
+    }
+    .bulk-upload-zone.file-selected {
+      border-color: var(--success);
+      background: rgba(63, 185, 80, 0.05);
+    }
+    .bulk-upload-icon {
+      font-size: 24px;
+      color: var(--accent-gold);
+      margin-bottom: 10px;
+      line-height: 1;
+    }
+    .bulk-upload-zone.file-selected .bulk-upload-icon { color: var(--success); }
+    .bulk-upload-label {
+      font-size: 13px;
+      color: var(--text-primary);
+      margin-bottom: 5px;
+    }
+    .bulk-upload-sub { font-size: 11px; color: var(--text-secondary); }
+
+    /* Bulk summary bar */
+    .bulk-summary {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 12px 18px;
+      margin-bottom: 14px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+      font-size: 12px;
+      color: var(--text-secondary);
+    }
+    .bulk-summary-count {
+      font-family: 'Playfair Display', serif;
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+    .bulk-summary-pill {
+      font-size: 10px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      padding: 3px 9px;
+      border-radius: 2px;
+      border: 1px solid transparent;
+    }
+
+    /* Bulk table */
+    .bulk-table-wrap {
+      overflow-x: auto;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      margin-bottom: 14px;
+    }
+    .bulk-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12px;
+    }
+    .bulk-table th {
+      background: var(--bg-tertiary);
+      color: var(--text-secondary);
+      font-size: 9px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      padding: 10px 12px;
+      text-align: left;
+      white-space: nowrap;
+      border-bottom: 1px solid var(--border);
+    }
+    .bulk-table td {
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--border);
+      white-space: nowrap;
+      vertical-align: middle;
+    }
+    .bulk-table tr:last-child td { border-bottom: none; }
+    .bulk-table .score-cell {
+      font-family: 'Playfair Display', serif;
+      font-size: 15px;
+      font-weight: 700;
+    }
+    .bulk-table .grade-cell {
+      font-family: 'Playfair Display', serif;
+      font-size: 16px;
+      font-weight: 700;
+      text-align: center;
+    }
+    .bulk-rec-pill {
+      font-size: 10px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      padding: 3px 7px;
+      border-radius: 2px;
+      border: 1px solid transparent;
+      display: inline-block;
+      white-space: nowrap;
+    }
+
+    /* Bulk action buttons */
+    .bulk-results-actions { display: flex; flex-direction: column; gap: 10px; }
+    .btn-download {
+      width: 100%;
+      background: transparent;
+      color: var(--text-secondary);
+      border: 1px solid var(--border);
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      padding: 12px 24px;
+      cursor: pointer;
+      border-radius: 3px;
+      transition: border-color 0.15s, color 0.15s;
+      display: block;
+    }
+    .btn-download:hover { border-color: var(--text-secondary); color: var(--text-primary); }
+    .btn-download:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    /* Section divider label */
+    .section-divider-label {
+      position: relative;
+      text-align: center;
+      margin: 40px 0 36px;
+    }
+    .section-divider-label::before {
+      content: '';
+      position: absolute;
+      top: 50%; left: 0; right: 0;
+      height: 1px;
+      background: linear-gradient(to right, transparent, var(--accent-gold-muted), transparent);
+    }
+    .section-divider-label span {
+      position: relative;
+      background: var(--bg-primary);
+      padding: 0 16px;
+      font-size: 10px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--text-secondary);
+    }
   </style>
 </head>
 <body>
@@ -683,10 +869,70 @@
     <!-- Header -->
     <header class="site-header">
       <div class="header-eyebrow">Internal Intelligence Tool</div>
-      <h1 class="header-title"><span>[TBD]</span> School Predictability Scorer</h1>
+      <h1 class="header-title">School Predictability Scorer</h1>
       <div class="header-subtitle">Drop Market Viability Evaluation Tool</div>
       <p class="header-description">Score a school's potential before investing in a CLC license. Results sent to your inbox.</p>
     </header>
+
+    <!-- ─────────────── BULK EVALUATION ─────────────────────── -->
+    <div class="bulk-section">
+      <div class="bulk-section-eyebrow">Bulk Mode</div>
+      <h2 class="bulk-section-title">Bulk Evaluation — Upload Excel File</h2>
+
+      <div class="bulk-card">
+        <div class="bulk-card-header">
+          <div class="section-eyebrow">CLC School Database Format</div>
+          <p class="section-description" style="margin-bottom:0">
+            Upload your spreadsheet (.xlsx or .xls). Scores are auto-derived from available columns.
+            Expected headers: School Name, State, NCAA Division / Conference, Mascot Name,
+            Historical Mascot Count, Est. Student Population, Est. Alumni Count,
+            Facebook Alumni Page URL, Reddit Page URL, Fight Song Link,
+            Fanatics Carries?, Priority Tier, Notes / HBCU / Target.
+            Rows with blank School Name or "AGENT_NEEDED" are skipped.
+          </p>
+        </div>
+        <div class="bulk-card-body">
+          <input type="file" id="bulk-file-input" accept=".xlsx,.xls" style="display:none">
+          <div class="bulk-upload-zone" id="bulk-upload-zone">
+            <div class="bulk-upload-icon" id="bulk-upload-icon">↑</div>
+            <div class="bulk-upload-label">Drop .xlsx / .xls here, or click to browse</div>
+            <div class="bulk-upload-sub" id="bulk-file-label">No file selected</div>
+          </div>
+          <button class="btn-primary" id="bulk-run-btn" onclick="runBulkEvaluation()" disabled style="margin-bottom:0">RUN BULK EVALUATION</button>
+        </div>
+      </div>
+
+      <!-- Bulk Results -->
+      <div id="bulk-results-wrap" style="display:none">
+        <div class="bulk-summary" id="bulk-summary"></div>
+        <div class="bulk-table-wrap">
+          <table class="bulk-table">
+            <thead>
+              <tr>
+                <th>School Name</th>
+                <th>State</th>
+                <th>Division</th>
+                <th>Mascot</th>
+                <th>Priority Tier</th>
+                <th>Fanatics</th>
+                <th>Score</th>
+                <th>Grade</th>
+                <th>Recommendation</th>
+              </tr>
+            </thead>
+            <tbody id="bulk-table-body"></tbody>
+          </table>
+        </div>
+        <div class="bulk-results-actions">
+          <button class="btn-email" id="bulk-email-btn" onclick="sendBulkEmail()">↗ &nbsp;Send All Results to Email</button>
+          <button class="btn-download" id="bulk-download-btn" onclick="downloadBulkExcel()">↓ &nbsp;Download Results as Excel</button>
+          <div class="email-status" id="bulk-email-status"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Divider -->
+    <div class="section-divider-label"><span>Or Evaluate a Single School</span></div>
 
     <!-- ─────────────────────── FORM ──────────────────────────── -->
     <form id="scorer-form" novalidate>
@@ -1853,6 +2099,292 @@
     // INIT
     // ================================================================
     onAnyChange();
+
+    // ================================================================
+    // BULK EVALUATION
+    // ================================================================
+
+    let _bulkFile    = null;
+    let _bulkResults = null;
+
+    // ── File upload wiring ──────────────────────────────────────────
+    (function initBulkUpload() {
+      const zone  = document.getElementById('bulk-upload-zone');
+      const input = document.getElementById('bulk-file-input');
+
+      zone.addEventListener('click', () => input.click());
+
+      zone.addEventListener('dragover', e => {
+        e.preventDefault();
+        zone.classList.add('drag-over');
+      });
+      zone.addEventListener('dragleave', e => {
+        if (!zone.contains(e.relatedTarget)) zone.classList.remove('drag-over');
+      });
+      zone.addEventListener('drop', e => {
+        e.preventDefault();
+        zone.classList.remove('drag-over');
+        const f = e.dataTransfer.files[0];
+        if (f) setBulkFile(f);
+      });
+      input.addEventListener('change', e => {
+        const f = e.target.files[0];
+        if (f) setBulkFile(f);
+      });
+    })();
+
+    function setBulkFile(file) {
+      _bulkFile = file;
+      document.getElementById('bulk-file-label').textContent =
+        file.name + '  (' + (file.size / 1024).toFixed(1) + ' KB)';
+      document.getElementById('bulk-upload-icon').textContent = '✓';
+      document.getElementById('bulk-upload-zone').classList.add('file-selected');
+      document.getElementById('bulk-run-btn').disabled = false;
+    }
+
+    // ── Row helpers ─────────────────────────────────────────────────
+    function bulkIsPresent(val) {
+      const s = (val || '').toString().trim();
+      return s !== '' && !s.toUpperCase().includes('AGENT_NEEDED');
+    }
+
+    function bulkParseFanatics(val) {
+      const s = (val || '').toString().toLowerCase();
+      if (s.includes('unlikely') || s.includes('opportunity')) return 5;
+      if (s.includes('partial')  || s.includes('generic'))     return 3;
+      if (s.includes('yes')      || s.includes('avoid'))       return 1;
+      if (s.includes('likely'))                                 return 2;
+      return 2;
+    }
+
+    function bulkParseDivision(divStr, notes) {
+      const d = (divStr || '').toString().toUpperCase();
+      const n = (notes  || '').toString().toUpperCase();
+      if (n.includes('POWER 4') || n.includes('POWER4'))                              return 1;
+      if (d.includes('DII')  || d.includes('D-II')  || d.includes('DIII') || d.includes('D-III')) return 4;
+      if (d.includes('FCS')  || d.includes('I-FCS'))                                 return 3;
+      if (d.includes('FBS')  || d.includes('I-FBS'))                                 return 2;
+      return 2;
+    }
+
+    function bulkParseAlumni(raw) {
+      const n = parseFloat((raw || '').toString().replace(/,/g, '')) || 0;
+      if (n === 0)     return 3;
+      if (n < 50000)   return 5;
+      if (n < 150000)  return 4;
+      if (n < 300000)  return 3;
+      if (n < 500000)  return 2;
+      return 1;
+    }
+
+    function isValidBulkRow(row) {
+      const name = (row['School Name'] || '').toString().trim();
+      return name !== '' && !name.toUpperCase().includes('AGENT_NEEDED');
+    }
+
+    function scoreBulkRow(row) {
+      const schoolName   = (row['School Name']                  || '').toString().trim();
+      const state        = (row['State']                         || '').toString().trim();
+      const division     = (row['NCAA Division / Conference']    || '').toString().trim();
+      const mascot       = (row['Mascot Name']                   || '').toString().trim();
+      const fbUrl        = (row['Facebook Alumni Page URL']      || '').toString().trim();
+      const redditUrl    = (row['Reddit Page URL']               || '').toString().trim();
+      const fanatics     = (row['Fanatics Carries?']             || '').toString().trim();
+      const priorityTier = (row['Priority Tier']                 || '').toString().trim();
+      const notes        = (row['Notes / HBCU / Target']         || '').toString().trim();
+      const alumniRaw    = row['Est. Alumni Count'];
+      const notesUpper   = notes.toUpperCase();
+
+      // S1 — Alumni Identity Strength (25%)
+      const s1Fb     = bulkIsPresent(fbUrl)     ? 3 : 1;
+      const s1Reddit = bulkIsPresent(redditUrl) ? 3 : 1;
+      const s1 = (s1Fb + s1Reddit) / 2;
+
+      // S2 — Merch Frustration Index (20%)
+      const s2 = bulkParseFanatics(fanatics);
+
+      // S3 — Athletic Emotional Relevance (20%)
+      const s3 = bulkParseDivision(division, notes);
+
+      // S4 — Alumni Geographic Concentration (15%)
+      const s4 = bulkParseAlumni(alumniRaw);
+
+      // S5 — School Narrative Distinctiveness (10%)
+      let s5 = 3;
+      if      (notesUpper.includes('HBCU'))              s5 = 5;
+      else if (notesUpper.includes('TARGET'))            s5 = 5;
+      else if (notesUpper.includes('COMMUNITY COLLEGE')) s5 = 2;
+      const mascotPresent = mascot !== '' && !mascot.toUpperCase().includes('AGENT_NEEDED');
+      if (mascotPresent) s5 = Math.min(5, s5 + 1);
+
+      // S6 — Alumni Association Activity (5%)
+      const s6 = bulkIsPresent(fbUrl) ? 4 : 2;
+
+      // S7 — Merchandise Desert Score (5%)
+      const s7 = bulkParseFanatics(fanatics);
+
+      // Composite
+      const weighted   = (s1*0.25) + (s2*0.20) + (s3*0.20) + (s4*0.15) + (s5*0.10) + (s6*0.05) + (s7*0.05);
+      const finalScore = Math.round(((weighted - 1) / 4) * 100 * 10) / 10;
+      const g          = getGrade(Math.max(0, Math.min(100, finalScore)));
+
+      return { schoolName, state, division, mascot, priorityTier, fanatics, finalScore, g };
+    }
+
+    // ── Run ─────────────────────────────────────────────────────────
+    function runBulkEvaluation() {
+      if (!_bulkFile) return;
+      const btn = document.getElementById('bulk-run-btn');
+      btn.disabled    = true;
+      btn.textContent = 'Processing…';
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        try {
+          const wb   = XLSX.read(new Uint8Array(e.target.result), { type: 'array' });
+          const ws   = wb.Sheets[wb.SheetNames[0]];
+          const rows = XLSX.utils.sheet_to_json(ws);
+
+          _bulkResults = rows
+            .filter(isValidBulkRow)
+            .map(scoreBulkRow)
+            .sort((a, b) => b.finalScore - a.finalScore);
+
+          renderBulkResults(_bulkResults);
+        } catch (err) {
+          console.error('Bulk error:', err);
+          alert('Error reading file. Please check the format and try again.\n\n' + err.message);
+        } finally {
+          btn.disabled    = false;
+          btn.textContent = 'RUN BULK EVALUATION';
+        }
+      };
+      reader.readAsArrayBuffer(_bulkFile);
+    }
+
+    // ── Render table ────────────────────────────────────────────────
+    function escH(s) {
+      return (s || '').toString()
+        .replace(/&/g,'&amp;').replace(/</g,'&lt;')
+        .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    }
+
+    function renderBulkResults(results) {
+      const counts = { A:0, B:0, C:0, D:0, F:0 };
+      results.forEach(r => counts[r.g.grade]++);
+
+      document.getElementById('bulk-summary').innerHTML = `
+        <span><span class="bulk-summary-count">${results.length}</span>&nbsp;schools evaluated —</span>
+        <span class="bulk-summary-pill" style="color:#3FB950;border-color:#3FB950;background:rgba(63,185,80,.1)">${counts.A} Strong Buy</span>
+        <span class="bulk-summary-pill" style="color:#7ee787;border-color:#7ee787;background:rgba(126,231,135,.1)">${counts.B} Buy</span>
+        <span class="bulk-summary-pill" style="color:#D29922;border-color:#D29922;background:rgba(210,153,34,.1)">${counts.C} Hold</span>
+        <span class="bulk-summary-pill" style="color:#f0883e;border-color:#f0883e;background:rgba(240,136,62,.1)">${counts.D} Caution</span>
+        <span class="bulk-summary-pill" style="color:#F85149;border-color:#F85149;background:rgba(248,81,73,.1)">${counts.F} Skip</span>
+      `;
+
+      const tbody = document.getElementById('bulk-table-body');
+      tbody.innerHTML = '';
+      results.forEach(r => {
+        const tr = document.createElement('tr');
+        tr.style.borderLeft = '3px solid ' + r.g.color;
+        tr.innerHTML = `
+          <td style="color:var(--text-primary);font-weight:500">${escH(r.schoolName)}</td>
+          <td>${escH(r.state)  || '—'}</td>
+          <td>${escH(r.division) || '—'}</td>
+          <td>${escH(r.mascot)   || '—'}</td>
+          <td>${escH(r.priorityTier) || '—'}</td>
+          <td style="font-size:11px;max-width:160px;white-space:normal">${escH(r.fanatics) || '—'}</td>
+          <td class="score-cell" style="color:${r.g.color}">${r.finalScore.toFixed(1)}</td>
+          <td class="grade-cell" style="color:${r.g.color}">${r.g.grade}</td>
+          <td><span class="bulk-rec-pill" style="color:${r.g.color};border-color:${r.g.color};background:${r.g.bg}">${r.g.rec}</span></td>
+        `;
+        tbody.appendChild(tr);
+      });
+
+      const wrap = document.getElementById('bulk-results-wrap');
+      wrap.style.display = 'block';
+      document.getElementById('bulk-email-btn').disabled    = false;
+      document.getElementById('bulk-email-btn').textContent = '↗ \u00a0Send All Results to Email';
+      document.getElementById('bulk-email-status').textContent = '';
+      document.getElementById('bulk-email-status').className  = 'email-status';
+      setTimeout(() => wrap.scrollIntoView({ behavior: 'smooth', block: 'start' }), 100);
+    }
+
+    // ── Bulk email ──────────────────────────────────────────────────
+    async function sendBulkEmail() {
+      const results = _bulkResults;
+      if (!results || !results.length) return;
+
+      const btn    = document.getElementById('bulk-email-btn');
+      const status = document.getElementById('bulk-email-status');
+      btn.disabled    = true;
+      btn.textContent = 'Sending…';
+      status.textContent = '';
+      status.className   = 'email-status';
+
+      const today  = new Date().toLocaleDateString('en-US', { weekday:'long', year:'numeric', month:'long', day:'numeric' });
+      const counts = { A:0, B:0, C:0, D:0, F:0 };
+      results.forEach(r => counts[r.g.grade]++);
+
+      let body = 'BULK EVALUATION REPORT\n' + today + '\n\n';
+      body += '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\nSUMMARY\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n';
+      body += 'Total Schools: '  + results.length + '\n';
+      body += 'Strong Buy (A): ' + counts.A + '\n';
+      body += 'Buy (B): '        + counts.B + '\n';
+      body += 'Hold (C): '       + counts.C + '\n';
+      body += 'Caution (D): '    + counts.D + '\n';
+      body += 'Skip (F): '       + counts.F + '\n\n';
+      body += '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\nSCHOOL RESULTS (highest to lowest)\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n';
+      results.forEach(r => {
+        body += r.schoolName + ' — ' + r.finalScore.toFixed(1) + '/100 — Grade ' + r.g.grade + ' — ' + r.g.rec + '\n';
+      });
+
+      try {
+        await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
+          to_email:        RECIPIENT_EMAIL,
+          school_name:     'BULK EVALUATION — ' + results.length + ' Schools',
+          overall_score:   '—',
+          grade:           '—',
+          recommendation:  results.length + ' schools evaluated',
+          score_breakdown: body,
+          facebook_url:    '—',
+          reddit_url:      '—',
+          date_evaluated:  today,
+        });
+        btn.textContent    = 'Report Sent ✓';
+        status.textContent = 'Bulk report sent to ' + RECIPIENT_EMAIL;
+        status.className   = 'email-status success';
+      } catch (err) {
+        console.error('Bulk email error:', err);
+        btn.disabled    = false;
+        btn.textContent = '↗ \u00a0Send All Results to Email';
+        status.textContent = 'Send failed. Check EmailJS configuration and try again.';
+        status.className   = 'email-status error';
+      }
+    }
+
+    // ── Excel export ────────────────────────────────────────────────
+    function downloadBulkExcel() {
+      const results = _bulkResults;
+      if (!results || !results.length) return;
+
+      const btn = document.getElementById('bulk-download-btn');
+      btn.disabled    = true;
+      btn.textContent = 'Preparing…';
+
+      const wsData = [
+        ['School Name','State','Division','Mascot','Priority Tier','Fanatics Status','Score','Grade','Recommendation'],
+        ...results.map(r => [r.schoolName, r.state, r.division, r.mascot, r.priorityTier, r.fanatics, r.finalScore.toFixed(1), r.g.grade, r.g.rec])
+      ];
+      const wb = XLSX.utils.book_new();
+      const ws = XLSX.utils.aoa_to_sheet(wsData);
+      ws['!cols'] = [{wch:32},{wch:12},{wch:22},{wch:18},{wch:14},{wch:28},{wch:8},{wch:7},{wch:14}];
+      XLSX.utils.book_append_sheet(wb, ws, 'Bulk Results');
+      XLSX.writeFile(wb, 'school-scorer-bulk-' + new Date().toISOString().split('T')[0] + '.xlsx');
+
+      btn.disabled    = false;
+      btn.textContent = '↓ \u00a0Download Results as Excel';
+    }
   </script>
 </body>
 </html>
