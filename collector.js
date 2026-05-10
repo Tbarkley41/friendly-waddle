@@ -228,9 +228,10 @@ async function collectReddit(schoolName) {
  * 0.5-second delay is applied in the main loop after this call.
  */
 async function collectIPEDS(schoolName) {
-  const fields = 'inst_name,enrollment_fall_total,year,longitude,latitude';
-  const url    = `https://educationdata.urban.org/api/v1/college-university/ipeds/directory/`
-               + `?inst_name=${enc(schoolName)}&fields=${fields}`;
+  // Use only first two words to improve API match rate
+  const shortName = schoolName.split(' ').slice(0, 2).join(' ');
+  const url = `https://educationdata.urban.org/api/v1/college-university/ipeds/directory/`
+            + `?inst_name=${encodeURIComponent(shortName)}&fields=inst_name,enrollment_fall_total,year,longitude,latitude&limit=5`;
 
   const res = await httpGet(url);
   if (res.status !== 200 || !res.data?.results?.length) {
@@ -244,18 +245,19 @@ async function collectIPEDS(schoolName) {
 
   if (!results.length) return { found: false };
 
-  // Prefer exact name match (case-insensitive), otherwise take first
+  // Pick the entry whose inst_name most closely matches the full school name
   const nameLower  = schoolName.toLowerCase();
-  const exactMatch = results.find(r => (r.inst_name || '').toLowerCase() === nameLower);
-  const r          = exactMatch || results[0];
+  const bestMatch  = results.find(r => nameLower.includes((r.inst_name || '').toLowerCase()))
+                  || results.find(r => (r.inst_name || '').toLowerCase().includes(shortName.toLowerCase()))
+                  || results[0];
 
   return {
     found:      true,
-    enrollment: r.enrollment_fall_total,
-    year:       r.year,
-    lat:        r.latitude  ?? '',
-    lon:        r.longitude ?? '',
-    alumni:     Math.round(r.enrollment_fall_total * 22),
+    enrollment: bestMatch.enrollment_fall_total,
+    year:       bestMatch.year,
+    lat:        bestMatch.latitude  ?? '',
+    lon:        bestMatch.longitude ?? '',
+    alumni:     Math.round(bestMatch.enrollment_fall_total * 22),
   };
 }
 
@@ -263,7 +265,8 @@ async function collectIPEDS(schoolName) {
 // LAYER 3  —  Google Custom Search → Facebook URL + Follower Count
 // ════════════════════════════════════════════════════════════════════
 
-let googleQuotaReached = false;
+let googleQuotaReached  = false;
+let googleDebugCount    = 0; // log full response for first 3 schools
 
 /**
  * Search Google CSE for a school's Facebook alumni page.
@@ -276,11 +279,21 @@ async function collectFacebook(schoolName) {
   if (!GOOGLE_API_KEY || !GOOGLE_CSE_ID) return { ...empty, url: '' };
   if (googleQuotaReached) return empty;
 
-  const q   = enc(`"${schoolName}" alumni association facebook`);
-  const url = `https://www.googleapis.com/customsearch/v1`
-            + `?key=${GOOGLE_API_KEY}&cx=${GOOGLE_CSE_ID}&q=${q}`;
+  // Less restrictive query — no quotes around school name
+  const query = `${schoolName} alumni facebook`;
+  const url   = `https://www.googleapis.com/customsearch/v1`
+              + `?key=${GOOGLE_API_KEY}&cx=${GOOGLE_CSE_ID}&q=${enc(query)}`;
 
   const res = await httpGet(url);
+
+  // Debug: log full response for first 3 schools processed
+  if (googleDebugCount < 3) {
+    googleDebugCount++;
+    console.log(`\n  [Google Debug #${googleDebugCount}] Query: ${query}`);
+    console.log(`  Status: ${res.status}`);
+    console.log(`  Response:`, JSON.stringify(res.data, null, 2).slice(0, 2000));
+    console.log('');
+  }
 
   // ── Quota / auth error detection ──────────────────────────────
   const httpStatus = res.status;
