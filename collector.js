@@ -353,7 +353,20 @@ async function main() {
     process.exit(1);
   }
 
-  const rows = XLSX.utils.sheet_to_json(wb.Sheets[SHEET_NAME], { defval: '' });
+  // ── Parse sheet with row 3 as headers (rows 1–2 are title/subtitle) ──
+  const rawSheet = XLSX.utils.sheet_to_json(wb.Sheets[SHEET_NAME], {
+    header: 1,
+    defval: '',
+  });
+  const headers  = rawSheet[2];  // Row 3 (0-indexed = 2) holds column headers
+  const dataRows = rawSheet.slice(3); // Data starts at row 4
+
+  // Map each data row array to a keyed object
+  const rows = dataRows.map(rowArr => {
+    const obj = {};
+    headers.forEach((h, i) => { obj[h] = rowArr[i] ?? ''; });
+    return obj;
+  });
 
   // Ensure every row has all new columns initialised (avoids undefined writes)
   rows.forEach(row => {
